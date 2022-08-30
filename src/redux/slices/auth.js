@@ -3,8 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 // ----------------------------------------------------------------------
 
 const initialState = {
-  currentUser: {},
-  token: null
+  currentUser: sessionStorage.currentUser ? JSON.parse(sessionStorage.currentUser) : {},
+  token: sessionStorage.token ? sessionStorage.token : null
 };
 
 const slice = createSlice({
@@ -14,12 +14,12 @@ const slice = createSlice({
 
     setCurrentUser(state, {payload}) {
       state.currentUser= payload;
-      localStorage.setItem('currentUser', payload)
+      sessionStorage.setItem('currentUser', payload)
     },
 
     setToken(state, {payload}) {
       state.token = payload;
-      localStorage.setItem('token', payload)
+      sessionStorage.setItem('token', payload)
     },
 
   },

@@ -6,9 +6,12 @@ import WidgetsIcon from '@mui/icons-material/Widgets';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
-import BuildIcon from '@mui/icons-material/Build';
-import BadgeIcon from '@mui/icons-material/Badge';
+import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import GroupsIcon from '@mui/icons-material/Groups';
+import ApartmentIcon from '@mui/icons-material/Apartment';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 
 const data = [
   {
@@ -21,21 +24,21 @@ const data = [
   {
     title: 'Propietarios',
     path: '/propietarios',
-    icon: <ShoppingCartIcon style={{ color: 'white' }} />,
+    icon: <AssignmentIndIcon style={{ color: 'white' }} />,
     value: 'propietarios',
     id: 5,
   },
   {
     title: 'Usuarios',
     path: '/usuarios',
-    icon: <ReceiptLongIcon style={{ color: 'white' }} />,
+    icon: <PeopleAltIcon style={{ color: 'white' }} />,
     value: 'usuarios',
     id: 4,
   },
   {
     title: 'Propiedades',
     path: '/propiedades',
-    icon: <ReceiptLongIcon style={{ color: 'white' }} />,
+    icon: <ApartmentIcon style={{ color: 'white' }} />,
     value: 'propiedades',
     id: 4,
   },
@@ -43,20 +46,20 @@ const data = [
     title: 'Asesores Externos',
     path: '/asesores-externos',
     value: 'asesores-externos',
-    icon: <AttachMoneyIcon style={{ color: 'white' }} />,
+    icon: <GroupsIcon style={{ color: 'white' }} />,
     id: 3,
   },
   {
     title: 'Aliados',
     path: '/aliados',
     value: 'aliados',
-    icon: <PersonIcon style={{ color: 'white' }} />,
+    icon: <VolunteerActivismIcon style={{ color: 'white' }} />,
     id: 1,
   },
   {
     title: 'Administracion',
     path: '/administracion',
-    icon: <SignalCellularAltIcon style={{ color: 'white' }} />,
+    icon: <AdminPanelSettingsIcon style={{ color: 'white' }} />,
     value: 'administracion',
     id: 6,
   },

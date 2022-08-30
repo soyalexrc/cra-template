@@ -24,6 +24,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import sampleUser from '../assets/img/no-image.jpg'
 import bg from '../assets/img/sidebar-5.jpg';
 
+
 const drawerWidth = 300;
 
 const Search = styled('div')(({theme}) => ({
@@ -95,7 +96,7 @@ const DrawerHeader = styled('div')(({theme}) => ({
 
 
 export default function Sidebar() {
-  const {logout} = useAuth()
+  const {logout, currentUser} = useAuth()
   const [anchorEl, setAnchorEl] = useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
@@ -220,15 +221,23 @@ export default function Sidebar() {
                 opacity: 0.05,
                 zIndex: -11
               },
-              width: drawerWidth,
+              width: drawerWidth + 1,
               boxSizing: 'border-box',
             },
           }}>
           <DrawerHeader sx={{display: 'flex', alignItems: 'center', justifyContent: 'flex-start',  padding: '1.5rem 2rem'}}>
-            <Box mr={2} component='img' src={sampleUser} width={40} height={40} sx={{ borderRadius: 100 }} />
+            <Box
+              mr={2}
+              component='img'
+              onError={({ currentTarget }) => { currentTarget.onerror = null; currentTarget.src= sampleUser }}
+              src={currentUser.image ? currentUser.image : sampleUser}
+              width={40}
+              height={40}
+              sx={{ borderRadius: 100 }}
+            />
             <Box>
-              <Typography variant='h5' color='#fff'>Maria </Typography>
-              <Typography color='#fff'>Administrador</Typography>
+              <Typography variant='h5' color='#fff'>{currentUser.first_name} </Typography>
+              <Typography color='#fff'>{currentUser.user_type}</Typography>
             </Box>
           </DrawerHeader>
           <MenuItems open={open} fn={() => {}}/>

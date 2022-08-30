@@ -81,6 +81,7 @@ export const mockProperties = {
       documentationStatus: 'PENDIENTE',
       code: 'VINM11',
       promotionStatus: 'No Aplica',
+      status: 'Suspendido',
       price: '100'
     },
     {
@@ -95,20 +96,22 @@ export const mockProperties = {
       documentationStatus: 'PENDIENTE',
       code: 'VINM11',
       promotionStatus: 'No Aplica',
+      status: 'Reservado',
       price: '100'
     },
     {
       id: 3,
-      inmueble: 'Locales Comerciales',
+      inmueble: 'Locales Comerciales y Departamentos por venta al mayor y detal',
       image: '',
       operation: 'Venta',
-      location: 'Urbanizacion la granja naguanagua',
+      location: 'Urbanizacion la granja naguanagua, calle 1234 parroquia san perez mujica, dpto 404',
       asesor: 'Maria',
       externalCapacitor: 'Maria',
       ally: 'Luis',
       documentationStatus: 'PENDIENTE',
       code: 'VINM11',
       promotionStatus: 'No Aplica',
+      status: 'Incompleto',
       price: '100'
     },
   ]

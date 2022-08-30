@@ -23,6 +23,7 @@ import {useNavigate} from 'react-router-dom'
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import {formatPrice} from "../../utils/format";
 import {openWhatsApp} from '../../utils/helpers';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
 import DeleteButton from "../../components/shared/DeleteButton";
 import noImage from '../../assets/img/no-image.jpg';
 
@@ -84,11 +85,13 @@ export default function PropertyList() {
           <TableHead sx={{backgroundColor: theme => theme.palette.primary.main}}>
             <TableRow>
               <TableCell/>
-              <TableCell sx={{color: '#fff', fontWeight: 'bold'}}>Imagen</TableCell>
-              <TableCell sx={{color: '#fff', fontWeight: 'bold'}}>Inmueble</TableCell>
-              <TableCell sx={{color: '#fff', fontWeight: 'bold'}}>Ubicacion</TableCell>
-              <TableCell sx={{color: '#fff', fontWeight: 'bold'}}>Operacion</TableCell>
-              <TableCell align='center' sx={{color: '#fff', fontWeight: 'bold'}}>Acciones</TableCell>
+              <TableCell sx={{color: '#fff', fontWeight: 'bold', width: '10%'}}>Imagen</TableCell>
+              <TableCell sx={{color: '#fff', fontWeight: 'bold', width: '20%'}}>Inmueble</TableCell>
+              <TableCell sx={{color: '#fff', fontWeight: 'bold', width: '20%'}}>Ubicacion</TableCell>
+              <TableCell sx={{color: '#fff', fontWeight: 'bold', width: '10%'}}>Operacion</TableCell>
+              <TableCell sx={{color: '#fff', fontWeight: 'bold', width: '10%'}}>Estatus <br/> Documentos</TableCell>
+              <TableCell sx={{color: '#fff', fontWeight: 'bold', width: '10%'}}>Aliado</TableCell>
+              <TableCell align='center' sx={{color: '#fff', fontWeight: 'bold', width: '20%'}}>Acciones</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -131,6 +134,7 @@ function Row({row}) {
         sx={{
           '&:last-child td, &:last-child th': {border: 0},
           transition: "background .2s",
+          backgroundColor: open && 'rgba(0,0,0, 0.05)',
           '&:hover': {
             backgroundColor: 'rgba(0,0,0, 0.05)'
           }
@@ -163,9 +167,22 @@ function Row({row}) {
             {row.operation}
           </Typography>
         </TableCell>
+        <TableCell>
+          <Typography>
+            {row.documentationStatus}
+          </Typography>
+        </TableCell>
+        <TableCell>
+          <Typography>
+            {row.ally}
+          </Typography>
+        </TableCell>
         <TableCell align='center'>
           <IconButton onClick={() => navigate('editar/user123')}>
             <EditIcon/>
+          </IconButton>
+          <IconButton onClick={() => alert('cambiar status')}>
+            <AutorenewIcon />
           </IconButton>
           <DeleteButton item='Usuario: User123' onClick={() => alert('deleted')}/>
         </TableCell>
@@ -173,29 +190,57 @@ function Row({row}) {
       <TableRow>
         <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box sx={{margin: 1}}>
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6} md={3}>
-                  <Typography fontWeight='bold'>Operacion</Typography>
-                  <Typography>Venta</Typography>
-                </Grid>
-                <Grid item xs={12} sm={6} md={3}>
-                  <Typography fontWeight='bold'>Punta Asesor</Typography>
-                  <Typography>Maria</Typography>
-                </Grid>
-                <Grid item xs={12} sm={6} md={3}>
-                  <Typography fontWeight='bold'>Capacitacion Externo</Typography>
-                  <Typography>Externo</Typography>
-                </Grid>
-                <Grid item xs={12} sm={6} md={3}>
-                  <Typography fontWeight='bold'>Aliado</Typography>
-                  <Typography>Aliado</Typography>
-                </Grid>
-                <Grid item xs={12} sm={6} md={3}>
-                  <Typography fontWeight='bold'>Estatus de documentos</Typography>
-                  <Typography>PENDIENTE</Typography>
-                </Grid>
-              </Grid>
+            <Box m={1} display='flex' flexWrap='wrap' alignItems='center' justifyContent='space-evenly' width='100%'>
+              <Box>
+                <Typography fontWeight='bold'>Punta Asesor</Typography>
+                <Typography>{row.asesor}</Typography>
+              </Box>
+              <Box>
+                <Typography fontWeight='bold'>Capacitacion Externo</Typography>
+                <Typography>{row.externalCapacitor}</Typography>
+              </Box>
+              <Box>
+                <Typography fontWeight='bold'>Codigo de promocion</Typography>
+                <Typography>{row.promotionStatus}</Typography>
+              </Box>
+              <Box>
+                <Typography fontWeight='bold'>Codigo</Typography>
+                <Typography>{row.code}</Typography>
+              </Box>
+              <Box>
+                <Typography fontWeight='bold'>Estatus</Typography>
+                <Typography>{row.status}</Typography>
+              </Box>
+              <Box>
+                <Typography fontWeight='bold'>Precio</Typography>
+                <Typography>{formatPrice(row.price)}</Typography>
+              </Box>
+              {/*<Grid container spacing={2}>*/}
+                {/*<Grid item xs={12} sm={6} md={2}>*/}
+                {/*  <Typography fontWeight='bold'>Punta Asesor</Typography>*/}
+                {/*  <Typography>{row.asesor}</Typography>*/}
+                {/*</Grid>*/}
+                {/*<Grid item xs={12} sm={6} md={3}>*/}
+                {/*  <Typography fontWeight='bold'>Capacitacion Externo</Typography>*/}
+                {/*  <Typography>{row.externalCapacitor}</Typography>*/}
+                {/*</Grid>*/}
+                {/*<Grid item xs={12} sm={6} md={3}>*/}
+                {/*  <Typography fontWeight='bold'>Codigo de promocion</Typography>*/}
+                {/*  <Typography>{row.promotionStatus}</Typography>*/}
+                {/*</Grid>*/}
+                {/*<Grid item xs={12} sm={6} md={2}>*/}
+                {/*  <Typography fontWeight='bold'>Codigo</Typography>*/}
+                {/*  <Typography>{row.code}</Typography>*/}
+                {/*/!*</Grid>*!/*/}
+                {/*<Grid item xs={12} sm={6} md={3}>*/}
+                {/*  <Typography fontWeight='bold'>Estatus</Typography>*/}
+                {/*  <Typography>{row.status}</Typography>*/}
+                {/*</Grid>*/}
+              {/*  <Grid item xs={12} sm={6} md={2}>*/}
+              {/*    <Typography fontWeight='bold'>Precio</Typography>*/}
+              {/*    <Typography>{formatPrice(row.price)}</Typography>*/}
+              {/*  </Grid>*/}
+              {/*</Grid>*/}
             </Box>
           </Collapse>
         </TableCell>
