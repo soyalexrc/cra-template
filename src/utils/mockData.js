@@ -66,6 +66,54 @@ export const mockTransactions = {
   ]
 }
 
+export const mockProperties = {
+  length: 200,
+  data: [
+    {
+      id: 1,
+      inmueble: 'Locales Comerciales',
+      image: '',
+      operation: 'Venta',
+      location: 'Urbanizacion la granja naguanagua',
+      asesor: 'Maria',
+      externalCapacitor: 'Maria',
+      ally: 'Luis',
+      documentationStatus: 'PENDIENTE',
+      code: 'VINM11',
+      promotionStatus: 'No Aplica',
+      price: '100'
+    },
+    {
+      id: 2,
+      inmueble: 'Locales Comerciales',
+      image: '',
+      operation: 'Venta',
+      location: 'Urbanizacion la granja naguanagua',
+      asesor: 'Maria',
+      externalCapacitor: 'Maria',
+      ally: 'Luis',
+      documentationStatus: 'PENDIENTE',
+      code: 'VINM11',
+      promotionStatus: 'No Aplica',
+      price: '100'
+    },
+    {
+      id: 3,
+      inmueble: 'Locales Comerciales',
+      image: '',
+      operation: 'Venta',
+      location: 'Urbanizacion la granja naguanagua',
+      asesor: 'Maria',
+      externalCapacitor: 'Maria',
+      ally: 'Luis',
+      documentationStatus: 'PENDIENTE',
+      code: 'VINM11',
+      promotionStatus: 'No Aplica',
+      price: '100'
+    },
+  ]
+}
+
 export const mockUserTable = {
   length: 300,
   data: [

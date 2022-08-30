@@ -6,20 +6,21 @@ import Router from "./routes";
 import 'react-phone-input-2/lib/material.css'
 import { useEffect, useState } from 'react';
 import SplashScreen from "./pages/SplashScreen";
+import {SnackbarProvider} from 'notistack'
+import {ConfirmationModalContextProvider} from "./context/ConfirmationModalContext";
+
 
 function App() {
-  const [component, setComponent] = useState(<SplashScreen />)
-  useEffect(() => {
-    setTimeout(() => {
-      setComponent(<Router />)
-    }, 4000)
-  }, [])
   return (
     <ThemeConfig>
       <GlobalStyles />
       <ProgressBarStyle />
       <ScrollToTop />
-      {component}
+      <ConfirmationModalContextProvider>
+        <SnackbarProvider maxSnack={4} anchorOrigin={{vertical: 'top', horizontal: 'center'}}>
+          <Router/>
+        </SnackbarProvider>
+      </ConfirmationModalContextProvider>
     </ThemeConfig>
   );
 }

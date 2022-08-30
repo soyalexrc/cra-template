@@ -1,4 +1,4 @@
-import {Collapse, Divider, List, ListItemButton, ListItemIcon, ListItemText} from "@mui/material";
+import {Box, Typography, Collapse, Divider, List, ListItemButton, ListItemIcon, ListItemText} from "@mui/material";
 import {useNavigate} from 'react-router-dom'
 import {useState} from 'react';
 import PersonIcon from '@mui/icons-material/Person';
@@ -9,68 +9,60 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
 import BuildIcon from '@mui/icons-material/Build';
 import BadgeIcon from '@mui/icons-material/Badge';
-import workers from '../assets/icons/workers.svg';
-import clients from '../assets/icons/clients.svg';
-import providers from '../assets/icons/providers.svg';
-import catalogue from '../assets/icons/catalogue.svg';
-import sell from '../assets/icons/sell.svg';
-import products from '../assets/icons/products.svg';
-import stadistics from '../assets/icons/stadistics.svg';
-import Box from "@mui/material/Box";
 
 const data = [
   {
-    title: 'Vender',
-    path: '/vender',
-    value: 'vender',
-    img: sell,
+    title: 'Inicio',
+    path: '/',
+    value: 'inicio',
+    icon: <WidgetsIcon style={{ color: 'white' }} />,
     id: 2,
   },
   {
-    title: 'Pedidos',
-    path: '/pedidos',
-    img: products,
-    value: 'pedidos',
+    title: 'Propietarios',
+    path: '/propietarios',
+    icon: <ShoppingCartIcon style={{ color: 'white' }} />,
+    value: 'propietarios',
     id: 5,
   },
   {
-    title: 'Productos',
-    path: '/productos',
-    img: products,
-    value: 'productos',
+    title: 'Usuarios',
+    path: '/usuarios',
+    icon: <ReceiptLongIcon style={{ color: 'white' }} />,
+    value: 'usuarios',
     id: 4,
   },
   {
-    title: 'Clientes',
-    path: '/clientes',
-    value: 'clientes',
-    img: clients,
+    title: 'Propiedades',
+    path: '/propiedades',
+    icon: <ReceiptLongIcon style={{ color: 'white' }} />,
+    value: 'propiedades',
+    id: 4,
+  },
+  {
+    title: 'Asesores Externos',
+    path: '/asesores-externos',
+    value: 'asesores-externos',
+    icon: <AttachMoneyIcon style={{ color: 'white' }} />,
+    id: 3,
+  },
+  {
+    title: 'Aliados',
+    path: '/aliados',
+    value: 'aliados',
+    icon: <PersonIcon style={{ color: 'white' }} />,
     id: 1,
   },
   {
-    title: 'Proveedores',
-    path: '/proveedores',
-    value: 'proveedores',
-    img: providers,
-    id: 10,
-  },
-  {
-    title: 'Estadisticas',
-    path: '/estadisticas',
-    img: stadistics,
-    value: 'estadisticas',
+    title: 'Administracion',
+    path: '/administracion',
+    icon: <SignalCellularAltIcon style={{ color: 'white' }} />,
+    value: 'administracion',
     id: 6,
-  },
-  {
-    title: 'Trabajadores',
-    path: '/trabajadores',
-    img: workers,
-    value: 'trabajadores',
-    id: 7,
   },
 ];
 
-export default function MenuItems({fn}) {
+export default function MenuItems({open, fn}) {
   const [selected, setSelected] = useState('');
   const navigate = useNavigate()
   const goTo = (path) => {
@@ -80,40 +72,36 @@ export default function MenuItems({fn}) {
   }
 
   return (
-    <List>
+    <Box sx={{color: 'white'}}>
       {
         data.map((route, index) => (
-          <>
-            <ListItemButton
-              key={route.id}
-              onClick={() => goTo(route.path)}
+          <Box
+            key={route.id}
+            onClick={() => goTo(route.path)}
+            sx={{
+              cursor: 'pointer',
+              minHeight: 48,
+              display: 'flex',
+              justifyContent: 'initial',
+              backgroundColor: selected === route.value && 'rgba(255,255,255, 0.1)',
+              "&:hover": {
+                backgroundColor: 'rgba(255,255,255, 0.1)',
+              },
+              p: 2.5,
+            }}
+          >
+            <Box
               sx={{
-                minHeight: 48,
-                justifyContent: 'initial',
-                backgroundColor: selected === route.value && 'rgba(0,0,0, 0.1)',
-                borderLeft: `5px solid ${selected === route.value ? '#EF6800' : 'fff'}`,
-                "&:hover": {
-                  backgroundColor: 'rgba(0,0,0, 0.1)',
-                  borderLeft: '5px solid #EF6800',
-                },
-                p: 2.5,
+                mr: 3,
+                justifyContent: 'center',
               }}
             >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: 3,
-                  justifyContent: 'center',
-                }}
-              >
-                <Box component='img' src={route.img}/>
-              </ListItemIcon>
-              <ListItemText primary={route.title}/>
-            </ListItemButton>
-            <Divider/>
-          </>
+              {route.icon}
+            </Box>
+            <Typography> {route.title}</Typography>
+          </Box>
         ))
       }
-    </List>
+    </Box>
   )
 }

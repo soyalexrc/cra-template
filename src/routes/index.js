@@ -54,33 +54,90 @@ export default function Router() {
         </ProtectedRoute>
       ),
       children: [
-        {path: '', element: <Home />},
-        {path: 'proveedores', element: <ProvidersList />},
-        {path: 'proveedores/eliminar/:id', element: <ProvidersDelete />},
-        {path: 'clientes', element: <ClientsList />},
-        {path: 'clientes/eliminar/:id', element: <ClientDelete />},
-        {path: 'trabajadores', element: <WorkersList />},
-        {path: 'trabajadores/eliminar/:id', element: <WorkerDelete />},
-        {path: 'productos', element: <ProductsAndCategoriesList />},
-        {path: 'productos/eliminar/:id', element: <ProductDelete />},
-        {path: 'productos/eliminar-categoria/:id', element: <CategoryDelete />},
+        {path: '', element: <Home />}
         ]
     },
 
-    {path: '/proveedores/registrar', element: <ProvidersRegister />},
-    {path: '/proveedores/editar/:id', element: <ProvidersEdit />},
+    {
+      path: '/propiedades',
+      element: (
+        <ProtectedRoute>
+          <MainLayout />
+        </ProtectedRoute>
+      ),
+      children: [
+        {path: '', element: <PropertiesAndAttributesList />},
+        {path: 'editar/:id', element: <PropertyEdit />},
+        {path: 'crear', element: <PropertyRegister />},
+        {path: 'editar-atributo/:id', element: <AttributeEdit />},
+        {path: 'crear-atributo', element: <AttributeRegister />},
+      ]
+    },
+    {
+      path: '/propietarios',
+      element: (
+        <ProtectedRoute>
+          <MainLayout />
+        </ProtectedRoute>
+      ),
+      children: [
+        {path: '', element: <OwnersList />},
+        {path: 'editar/:id', element: <OwnerEdit />},
+        {path: 'crear', element: <OwnerRegister />},
+      ]
+    },
 
-    {path: '/clientes/registrar', element: <ClientRegister />},
-    {path: '/clientes/editar/:id', element: <ClientEdit />},
+    {
+      path: '/usuarios',
+      element: (
+        <ProtectedRoute>
+          <MainLayout />
+        </ProtectedRoute>
+      ),
+      children: [
+        {path: '', element: <UsersList />},
+        {path: 'editar/:id', element: <UserEdit />},
+        {path: 'crear', element: <UserRegister />},
+      ]
+    },
+    {
+      path: '/asesores-externos',
+      element: (
+        <ProtectedRoute>
+          <MainLayout />
+        </ProtectedRoute>
+      ),
+      children: [
+        {path: '', element: <ExternalAdvisersList />},
+        {path: 'editar/:id', element: <ExternalAdviserEdit />},
+        {path: 'crear', element: <ExternalAdviserRegister />},
+      ]
+    },
+    {
+      path: '/aliados',
+      element: (
+        <ProtectedRoute>
+          <MainLayout />
+        </ProtectedRoute>
+      ),
+      children: [
+        {path: '', element: <AlliesList />},
+        {path: 'editar/:id', element: <AllyEdit />},
+        {path: 'crear', element: <AllyRegister />},
+      ]
+    },
+    {
+      path: '/administracion',
+      element: (
+        <ProtectedRoute>
+          <MainLayout />
+        </ProtectedRoute>
+      ),
+      children: [
+        {path: '', element: <Administration />},
+      ]
+    },
 
-    {path: '/trabajadores/registrar', element: <WorkerRegister />},
-    {path: '/trabajadores/editar/:id', element: <WorkerEdit />},
-
-    {path: '/productos/registrar', element: <ProductRegister />},
-    {path: '/productos/editar/:id', element: <ProductEdit />},
-
-    {path: '/productos/registrar-categoria', element: <CategoryRegister />},
-    {path: '/productos/editar-categoria/:id', element: <CategoryEdit />},
 
     {path: '/login', element: <Login /> },
     {path: '/recuperar-clave', element: <ForgotPassword /> },
@@ -92,32 +149,37 @@ const NotFound = Loadable(lazy(() => import('../pages/NotFound')));
 
 const Home = Loadable(lazy(() => import('../pages/home')));
 
-//providers
-const ProvidersList = Loadable(lazy(() => import('../pages/providers/ProvidersList')));
-const ProvidersRegister = Loadable(lazy(() => import('../pages/providers/ProvidersRegister')));
-const ProvidersEdit = Loadable(lazy(() => import('../pages/providers/ProvidersEdit')));
-const ProvidersDelete = Loadable(lazy(() => import('../pages/providers/ProvidersDelete')));
+// properties
+const PropertyRegister = Loadable(lazy(() => import('../pages/properties/PropertyRegister')));
+const PropertyEdit = Loadable(lazy(() => import('../pages/properties/PropertyEdit')));
+const AttributeEdit = Loadable(lazy(() => import('../pages/properties/AttributeEdit')));
+const AttributeRegister = Loadable(lazy(() => import('../pages/properties/AttributeRegister')));
+const PropertiesAndAttributesList = Loadable(lazy(() => import('../pages/properties/index')))
 
-//clients
-const ClientsList = Loadable(lazy(() => import('../pages/clients/ClientsList')));
-const ClientRegister = Loadable(lazy(() => import('../pages/clients/ClientRegister')));
-const ClientEdit = Loadable(lazy(() => import('../pages/clients/ClientEdit')));
-const ClientDelete = Loadable(lazy(() => import('../pages/clients/ClientDelete')));
 
-//workers
-const WorkersList = Loadable(lazy(() => import('../pages/workers/WorkersList')));
-const WorkerEdit = Loadable(lazy(() => import('../pages/workers/WorkerEdit')));
-const WorkerDelete = Loadable(lazy(() => import('../pages/workers/WorkerDelete')));
-const WorkerRegister = Loadable(lazy(() => import('../pages/workers/WorkerRegister')));
+// users
+const UsersList = Loadable(lazy(() => import('../pages/users/UsersList')));
+const UserEdit = Loadable(lazy(() => import('../pages/users/UserEdit')));
+const UserRegister = Loadable(lazy(() => import('../pages/users/UserRegister')));
 
-//products
-const ProductsAndCategoriesList = Loadable(lazy(() => import('../pages/products/index')));
-const ProductRegister = Loadable(lazy(() => import('../pages/products/ProductRegister')));
-const ProductEdit = Loadable(lazy(() => import('../pages/products/ProductEdit')));
-const ProductDelete = Loadable(lazy(() => import('../pages/products/ProductDelete')));
-const CategoryRegister = Loadable(lazy(() => import('../pages/products/CategoryRegister')));
-const CategoryEdit = Loadable(lazy(() => import('../pages/products/CategoryEdit')));
-const CategoryDelete = Loadable(lazy(() => import('../pages/products/CategoryDelete')));
+
+// allies
+const AlliesList = Loadable(lazy(() => import('../pages/allies/AlliesList')));
+const AllyEdit = Loadable(lazy(() => import('../pages/allies/AllyEdit')));
+const AllyRegister = Loadable(lazy(() => import('../pages/allies/AllyRegister')));
+
+// advisers
+const ExternalAdvisersList = Loadable(lazy(() => import('../pages/external-advisers/ExternalAdvisersList')));
+const ExternalAdviserEdit = Loadable(lazy(() => import('../pages/external-advisers/ExternalAdviserEdit')));
+const ExternalAdviserRegister = Loadable(lazy(() => import('../pages/external-advisers/ExternalAdviserRegister')));
+
+// owners
+const OwnerRegister = Loadable(lazy(() => import('../pages/owners/OwnerRegister')));
+const OwnersList = Loadable(lazy(() => import('../pages/owners/OwnersList')));
+const OwnerEdit = Loadable(lazy(() => import('../pages/owners/OwnerEdit')));
+
+// administration
+const Administration = Loadable(lazy(() => import('../pages/administration/index')));
 
 //auth
 const Login = Loadable(lazy(() => import('../pages/auth/Login')));

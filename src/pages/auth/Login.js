@@ -1,7 +1,7 @@
 import {Box, TextField, Typography, InputAdornment, IconButton, Button, useMediaQuery} from "@mui/material";
 import {styled} from "@mui/material/styles";
 import Page from "../../components/Page";
-import Logo from '../../assets/alishop-logo.png';
+import Logo from '../../assets/vision-icon.png';
 import {useState} from 'react';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -14,6 +14,17 @@ const RootStyle = styled(Page)(({theme}) => ({
   width: "100%",
   display: 'flex',
   position: 'relative',
+}));
+
+const IconSide = styled(Box)(({theme}) => ({
+  flex: 0.2,
+  backgroundColor: theme.palette.primary.main,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  [theme.breakpoints.up('md')]: {
+    flex: 0.4
+  }
 }));
 
 export default function Login() {
@@ -33,11 +44,10 @@ export default function Login() {
   }
 
   return (
-    <RootStyle title='Inicio de sesión | Alishop' sx={{ flexDirection: largeScreen ? 'row' : 'column' }}>
-      <Box
-        sx={{flex: largeScreen ? 0.4 : 0.2, backgroundColor: '#000000', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-        <Box component='img' src={Logo} width={largeScreen ? 300 : 150}/>
-      </Box>
+    <RootStyle title='Inicio de sesión | Vision Inmobiliaria' sx={{ flexDirection: largeScreen ? 'row' : 'column' }}>
+      <IconSide>
+        <Box component='img' src={Logo} width={largeScreen ? 150 : 75}/>
+      </IconSide>
       <Box sx={{flex: largeScreen ? 0.6 : 0.8, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
         <Box width={largeScreen ? 450 : '100%'} p={2}>
           <Typography align='center' variant='h6'>Inicio de sesión</Typography>
