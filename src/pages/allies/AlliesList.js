@@ -22,6 +22,7 @@ import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import {formatPrice} from "../../utils/format";
 import { openWhatsApp } from '../../utils/helpers';
 import DeleteButton from "../../components/shared/DeleteButton";
+import Page from "../../components/Page";
 
 export default function AlliesList() {
   const largeScreen = useMediaQuery((theme) => theme.breakpoints.up('md'))

@@ -1,24 +1,152 @@
-import CategoryBox from "../../components/categories/CategoryBox";
-import {Grid} from '@mui/material';
-import sampleCategory from '../../assets/img/sample-category.jpg';
+import {
+  Box,
+  LinearProgress,
+  TableContainer,
+  Table,
+  TableRow,
+  TableCell,
+  Button,
+  TableHead,
+  TableBody,
+  Grid,
+  Pagination, TextField, InputAdornment, IconButton, Paper, useMediaQuery
+} from "@mui/material";
+import EditIcon from '@mui/icons-material/Edit';
+import SearchIcon from '@mui/icons-material/Search';
+import {mockUserTable} from '../../utils/mockData';
+import {useState, useEffect} from "react";
+import Typography from "@mui/material/Typography";
+import AddIcon from "@mui/icons-material/Add";
+import {useNavigate} from 'react-router-dom'
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import {formatPrice} from "../../utils/format";
+import {openWhatsApp} from '../../utils/helpers';
+import DeleteButton from "../../components/shared/DeleteButton";
+import UseAttributes from "../../hooks/api/attributes/useAttributes";
 
 export default function AttributesList() {
+  const largeScreen = useMediaQuery((theme) => theme.breakpoints.up('md'))
+  const navigate = useNavigate();
+  const { getAttributes, attributes, loading } = UseAttributes();
+  const [page, setPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('')
+
+  useEffect(() => {
+    getAttributes();
+  }, [])
+
+  console.log(attributes)
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12} sm={6} md={4}>
-        <CategoryBox isEmpty/>
-      </Grid>
-
-      {
-        Array.from([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).map((el, index) => (
-          <Grid key={index + 1} item xs={12} sm={6} md={4}>
-            <CategoryBox title='Categoria de ejemplo' amount={20} img={sampleCategory}/>
+    <Paper elevation={4} sx={{width: '100%', p: 2}}>
+      <Box p={2}>
+        <Box display='flex' alignItems='center' mb={2}>
+          <Typography variant='h2'>Atributos</Typography>
+          <Typography sx={{mx: 2}} color='gray'>{attributes.length} atributos registrados</Typography>
+        </Box>
+        <Grid container>
+          <Grid item xs={12} md={6}>
+            <TextField
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)
+              }
+              sx={{width: '100%'}}
+              id="search-textfield"
+              placeholder="Buscar por nombre"
+              variant="outlined"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton>
+                      <SearchIcon/>
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
           </Grid>
-        ))
+          <Grid item xs={12} md={6} sx={{display: 'flex', justifyContent: 'flex-end'}}>
+            <Button fullWidth={!largeScreen} variant='contained' color='primary'
+                    sx={{display: 'flex', mt: !largeScreen && 2}} onClick={() => navigate('crear-atributo')}>
+              <AddIcon/>
+              Atributo
+            </Button>
+          </Grid>
+        </Grid>
+      </Box>
+      <Box sx={{width: '100%'}}>
+        {loading && <LinearProgress/>}
+      </Box>
+      <TableContainer>
+        <Table>
+          <TableHead sx={{backgroundColor: 'lightgray'}}>
+            <TableRow>
+              <TableCell sx={{color: theme => theme.palette.common.black, fontWeight: 'bold',}}>Categoria</TableCell>
+              <TableCell sx={{color: theme => theme.palette.common.black, fontWeight: 'bold',}}>Tipo de formulario</TableCell>
+              <TableCell sx={{color: theme => theme.palette.common.black, fontWeight: 'bold',}}>Atributo</TableCell>
+              <TableCell align='center' sx={{color: theme => theme.palette.common.black, fontWeight: 'bold',}}>Acciones</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {!loading && attributes && attributes.length > 0 && attributes.slice(page * 10, page * 10 + 10).map((row) => (
+              <TableRow
+                key={row.id}
+                sx={{
+                  '&:last-child td, &:last-child th': {border: 0},
+                  transition: "background .2s",
+                  '&:hover': {
+                    backgroundColor: 'rgba(0,0,0, 0.05)'
+                  }
+                }}
+              >
+                <TableCell>
+                  <Typography>
+                    {row.category}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                 <Typography>
+                   {row.form_type}
+                 </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>
+                    {row.label.replace(':', '')}
+                  </Typography>
+                </TableCell>
+                <TableCell align='center'>
+                  <IconButton onClick={() => navigate('editar/user123')}>
+                    <EditIcon/>
+                  </IconButton>
+                  <DeleteButton item='Usuario: User123' onClick={() => alert('deleted')}/>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      {/*{loading && <Box sx={{ height: '100vh', width: '100%', display: 'flex', justifyContent: 'center' }}><LoadingScreen /></Box>}*/}
+      {
+        (!attributes || attributes.length) < 1 &&
+        <Box sx={{height: '50vh', display: 'flex', justifyContent: 'center', width: '100%', alignItems: 'center'}}>
+          <Typography>No se encontraron atributos...</Typography>
+        </Box>
       }
-
-
-
-    </Grid>
+      <Box sx={{display: 'flex', justifyContent: 'end', pt: 5}}>
+        <Pagination
+          boundaryCount={1}
+          count={Math.round(attributes.length / 10)}
+          defaultPage={1}
+          onChange={handleChangePage}
+          page={page}
+          showFirstButton
+          showLastButton
+        />
+      </Box>
+    </Paper>
   )
 }

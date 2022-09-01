@@ -23,6 +23,7 @@ import {MHidden} from "../components/@material-extend";
 import CloseIcon from '@mui/icons-material/Close'
 import sampleUser from '../assets/img/no-image.jpg'
 import bg from '../assets/img/sidebar-5.jpg';
+import {useMediaQuery} from "@mui/material";
 
 
 const drawerWidth = 300;
@@ -97,6 +98,7 @@ const DrawerHeader = styled('div')(({theme}) => ({
 
 export default function Sidebar() {
   const {logout, currentUser} = useAuth()
+  const largeScreen = useMediaQuery((theme) => theme.breakpoints.up('md'))
   const [anchorEl, setAnchorEl] = useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
@@ -117,6 +119,8 @@ export default function Sidebar() {
   const handleLogout = () => {
     logout();
   }
+
+  console.log(currentUser);
 
 
   const menuId = 'primary-search-account-menu';
@@ -236,8 +240,8 @@ export default function Sidebar() {
               sx={{ borderRadius: 100 }}
             />
             <Box>
-              <Typography variant='h5' color='#fff'>{currentUser.first_name} </Typography>
-              <Typography color='#fff'>{currentUser.user_type}</Typography>
+              <Typography variant='h5' color='#fff'>{currentUser?.first_name} </Typography>
+              <Typography color='#fff'>{currentUser?.user_type}</Typography>
             </Box>
           </DrawerHeader>
           <MenuItems open={open} fn={() => {}}/>
@@ -286,7 +290,7 @@ export default function Sidebar() {
           <MenuItems open={open} fn={handleDrawerChange}/>
         </Drawer>
       </MHidden>
-      <Box component="main" sx={{p: 2, width: '100%', height: '100%', minHeight: '100vh', flexGrow: 1, backgroundColor: '#fff'}}>
+      <Box component="main" sx={{p: largeScreen ? 2 : 0, width: '100%', height: '100%', minHeight: '100vh', flexGrow: 1, backgroundColor: '#fff'}}>
         <DrawerHeader/>
         <Outlet/>
       </Box>

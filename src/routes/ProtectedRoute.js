@@ -8,7 +8,7 @@ export default function ProtectedRoute({ children }) {
   const { token } = useAuth();
   const location = useLocation();
 
-  if (!token && !sessionStorage.token) {
+  if (!token && !localStorage.getItem('vi-token')) {
     return <Navigate to="/login" replace state={{ from: location }} />;
   }
 
