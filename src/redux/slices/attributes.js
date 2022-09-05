@@ -16,7 +16,7 @@ const slice = createSlice({
     },
 
     removeAttribute(state, {payload}) {
-      const attributes = {...state.attributes};
+      const attributes = [...state.attributes];
       const index = attributes.findIndex(property => property.id === payload);
       attributes.splice(index, 1);
       state.attributes = attributes;

@@ -18,35 +18,83 @@ import {useState, useEffect} from "react";
 import Typography from "@mui/material/Typography";
 import AddIcon from "@mui/icons-material/Add";
 import {useNavigate} from 'react-router-dom'
-import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import {formatPrice} from "../../utils/format";
-import {openWhatsApp} from '../../utils/helpers';
 import DeleteButton from "../../components/shared/DeleteButton";
-import UseAttributes from "../../hooks/api/attributes/useAttributes";
+import AttributesCreadeUpdateDrawer from "../../components/properties/AttributesCreadeUpdateDrawer";
+import useAttributes from "../../hooks/api/attributes/useAttributes";
+import useDebounce from "../../hooks/useDebounce";
 
 export default function AttributesList() {
   const largeScreen = useMediaQuery((theme) => theme.breakpoints.up('md'))
   const navigate = useNavigate();
-  const { getAttributes, attributes, loading } = UseAttributes();
+  const { getAttributes, attributes, loading, deleteAttribute } = useAttributes();
+  const [filteredData, setFilteredData] = useState(attributes);
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('')
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+  const [openDrawer, setOpenDrawer] = useState(false)
+  const [operationType, setOperationType] = useState('create')
+  const [initialData, setInitialData ] = useState({
+    category: 'Custom',
+    form_type: '',
+    label: '',
+    placeholder: '',
+    property_type: '',
+    property_values: ''
+  })
 
   useEffect(() => {
     getAttributes();
   }, [])
 
-  console.log(attributes)
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
+  function fnAction() {
+    setOpenDrawer(false);
+    getAttributes()
+  }
+
+  function handleCreateAttribute() {
+    setOperationType('create');
+    setInitialData({
+      category: 'Custom',
+      form_type: '',
+      label: '',
+      placeholder: '',
+      property_type: '',
+      property_values: ''
+    });
+    setOpenDrawer(true);
+  }
+
+  function handleUpdateAttribute(attr) {
+    setInitialData(attr);
+    setOperationType('update');
+    setOpenDrawer(true);
+  }
+
+  const handleAttrChanges = (index, value) => {
+    setInitialData(prevState => ({
+      ...prevState,
+      [index]: value,
+    }))
+  }
+  // useEffect(() => {
+  //   if (debouncedSearchTerm) {
+  //     console.log(searchTerm);
+  //     console.log(attributes.filter(x => x.label.replace(':', '').toLowerCase().includes(searchTerm.toLowerCase())))
+  //     setFilteredData(attributes.filter(x => x.label.replace(':', '').toLowerCase().includes(searchTerm.toLowerCase())))
+  //   }
+  // }, [debouncedSearchTerm])
+
   return (
     <Paper elevation={4} sx={{width: '100%', p: 2}}>
       <Box p={2}>
-        <Box display='flex' alignItems='center' mb={2}>
+        <Box display='flex' alignItems='center' mb={2} flexWrap='wrap'>
           <Typography variant='h2'>Atributos</Typography>
-          <Typography sx={{mx: 2}} color='gray'>{attributes.length} atributos registrados</Typography>
+          <Typography sx={{mx: largeScreen && 2}} color='gray'>{attributes.length} atributos registrados</Typography>
         </Box>
         <Grid container>
           <Grid item xs={12} md={6}>
@@ -71,7 +119,7 @@ export default function AttributesList() {
           </Grid>
           <Grid item xs={12} md={6} sx={{display: 'flex', justifyContent: 'flex-end'}}>
             <Button fullWidth={!largeScreen} variant='contained' color='primary'
-                    sx={{display: 'flex', mt: !largeScreen && 2}} onClick={() => navigate('crear-atributo')}>
+                    sx={{display: 'flex', mt: !largeScreen && 2}} onClick={handleCreateAttribute}>
               <AddIcon/>
               Atributo
             </Button>
@@ -83,7 +131,7 @@ export default function AttributesList() {
       </Box>
       <TableContainer>
         <Table>
-          <TableHead sx={{backgroundColor: 'lightgray'}}>
+          <TableHead sx={{backgroundColor: '#eaeaea'}}>
             <TableRow>
               <TableCell sx={{color: theme => theme.palette.common.black, fontWeight: 'bold',}}>Categoria</TableCell>
               <TableCell sx={{color: theme => theme.palette.common.black, fontWeight: 'bold',}}>Tipo de formulario</TableCell>
@@ -105,7 +153,7 @@ export default function AttributesList() {
               >
                 <TableCell>
                   <Typography>
-                    {row.category}
+                    {row.property_type}
                   </Typography>
                 </TableCell>
                 <TableCell>
@@ -119,10 +167,12 @@ export default function AttributesList() {
                   </Typography>
                 </TableCell>
                 <TableCell align='center'>
-                  <IconButton onClick={() => navigate('editar/user123')}>
-                    <EditIcon/>
-                  </IconButton>
-                  <DeleteButton item='Usuario: User123' onClick={() => alert('deleted')}/>
+                  <Box display='flex'>
+                    <IconButton onClick={() => handleUpdateAttribute(row)}>
+                      <EditIcon/>
+                    </IconButton>
+                    <DeleteButton item={`Atributo: ${row.label}`} onClick={() => deleteAttribute(row.id, () => getAttributes())}/>
+                  </Box>
                 </TableCell>
               </TableRow>
             ))}
@@ -147,6 +197,15 @@ export default function AttributesList() {
           showLastButton
         />
       </Box>
+      <AttributesCreadeUpdateDrawer
+        closeAction={() => setOpenDrawer(false)}
+        open={openDrawer}
+        handleChange={handleAttrChanges}
+        largeScreen={largeScreen}
+        initialData={initialData}
+        fnAction={() => fnAction()}
+        type={operationType}
+      />
     </Paper>
   )
 }

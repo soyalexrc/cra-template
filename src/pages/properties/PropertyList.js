@@ -126,7 +126,7 @@ export default function PropertyList() {
       </Box>
       <TableContainer>
         <Table>
-          <TableHead sx={{backgroundColor: 'lightgray'}}>
+          <TableHead sx={{backgroundColor: '#eaeaea'}}>
             <TableRow>
               <TableCell/>
               <TableCell
