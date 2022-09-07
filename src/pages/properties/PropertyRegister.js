@@ -17,6 +17,7 @@ import HandshakeIcon from '@mui/icons-material/Handshake';
 import PhotosInformation from "../../components/properties/propertyRegister/PhotosInformation";
 import NegotiationInformation from "../../components/properties/propertyRegister/NegotiationInformation";
 import LegalDocumentsInformation from "../../components/properties/propertyRegister/LegalDocumentsInformation";
+import useRegisterProperty from "../../hooks/api/properties/useRegisterProperty";
 
 
 export default function PropertyRegister() {

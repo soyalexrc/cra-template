@@ -29,6 +29,7 @@ import noImage from '../../assets/img/no-image.jpg'
 import SmallLoading from "../../components/SmallLoading";
 import useUpdateUser from "../../hooks/api/users/useUpdateUser";
 import useGetUsers from "../../hooks/api/users/useGetUsers";
+import * as CryptoJS from 'crypto-js';
 
 export default function UserEdit() {
   const {id} = useParams();
@@ -37,6 +38,20 @@ export default function UserEdit() {
   const {loading, editUser} = useUpdateUser();
   const {currentUser, getUserById, loading: getLoading} = useGetUsers();
   const [userData, setUserData] = useState(currentUser)
+  const masterCryptoKey = '123456$#@$^@1ERF'
+
+  function decryptValue(keys, value) {
+    const key = CryptoJS.enc.Utf8.parse(keys);
+    const iv = CryptoJS.enc.Utf8.parse(keys);
+    const decrypted = CryptoJS.AES.decrypt(value, key, {
+      keySize: 128 / 8,
+      iv,
+      mode: CryptoJS.mode.CBC,
+      padding: CryptoJS.pad.Pkcs7
+    });
+
+    return decrypted.toString(CryptoJS.enc.Utf8);
+  }
 
   useEffect(() => {
     getUserById(id)
@@ -44,6 +59,15 @@ export default function UserEdit() {
 
   useEffect(() => {
     setUserData(currentUser)
+  }, [currentUser])
+
+  useEffect(() => {
+    if (currentUser) {
+      setUserData(prevState => ({
+        ...prevState,
+        password: decryptValue(masterCryptoKey, prevState.password)
+      }))
+    }
   }, [currentUser])
 
   function changeUserData(type, value) {
@@ -280,7 +304,7 @@ export default function UserEdit() {
                     variant="outlined"
                   />
                 </Grid>
-                <Grid item xs={12} >
+                <Grid item xs={12}>
                   <TextField
                     fullWidth
                     rows={4}
@@ -382,7 +406,8 @@ export default function UserEdit() {
             </Paper>
           </Grid>
           <Grid item xs={12} sx={{display: 'flex', justifyContent: 'center'}}>
-            <Button disabled={loading} fullWidth={!largeScreen} sx={{ m: 5 }} onClick={() => editUser(userData)} variant='contained'>Editar usuario</Button>
+            <Button disabled={loading} fullWidth={!largeScreen} sx={{m: 5}} onClick={() => editUser(userData)}
+                    variant='contained'>Editar usuario</Button>
           </Grid>
         </Grid>
       }

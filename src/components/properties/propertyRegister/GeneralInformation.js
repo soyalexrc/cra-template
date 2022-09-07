@@ -2,18 +2,19 @@ import {FormControl, Grid, MenuItem, Select, TextField, Typography, InputAdornme
 import useRegisterProperty from "../../../hooks/api/properties/useRegisterProperty";
 
 export default function GeneralInformation() {
-  const {handlePropertyData: handleChange, propertyData} = useRegisterProperty();
+  const {handlePropertyData: handleChange, data} = useRegisterProperty();
 
+  console.log(data.property);
   return (
     <Grid container spacing={4}>
-      <Grid item xs={12} md={3}>
+      <Grid item xs={12} md={6}>
         <Typography fontWeight='bold' sx={{mb: 1}}>Compania</Typography>
         <TextField
           color='secondary'
           fullWidth
           placeholder='Compania'
           disabled
-          value={propertyData.company}
+          value={data.property.company}
           onChange={(e) => handleChange('company', e.target.value)}
           variant="outlined"
         />
@@ -24,7 +25,7 @@ export default function GeneralInformation() {
           color='secondary'
           fullWidth
           placeholder='Codigo'
-          value={propertyData.code}
+          value={data.property.code}
           onChange={(e) => handleChange('code', e.target.value)}
           variant="outlined"
         />
@@ -35,7 +36,7 @@ export default function GeneralInformation() {
         <FormControl fullWidth>
 
           <Select
-            value={propertyData.operationType}
+            value={data.property.operationType}
             onChange={(e) => handleChange('operationType', e.target.value)}
           >
             <MenuItem value='Venta'>Venta</MenuItem>
@@ -50,7 +51,7 @@ export default function GeneralInformation() {
         <FormControl fullWidth>
 
           <Select
-            value={propertyData.propertyType}
+            value={data.property.propertyType}
             onChange={(e) => handleChange('propertyType', e.target.value)}
           >
             <MenuItem value='Apartamento'>Apartamento</MenuItem>
@@ -69,7 +70,7 @@ export default function GeneralInformation() {
         <FormControl fullWidth>
 
           <Select
-            value={propertyData.propertyCondition}
+            value={data.property.propertyCondition}
             onChange={(e) => handleChange('propertyCondition', e.target.value)}
           >
             <MenuItem value='Mercado Primario'>Mercado Primario</MenuItem>
@@ -83,7 +84,7 @@ export default function GeneralInformation() {
           color='secondary'
           fullWidth
           placeholder='Terreno'
-          value={propertyData.footageGround}
+          value={data.property.footageGround}
           InputProps={{
             endAdornment:
               <InputAdornment position="end">Mt2</InputAdornment>
@@ -94,7 +95,7 @@ export default function GeneralInformation() {
       </Grid>
       <Grid item xs={12} md={2}>
         {
-          propertyData.propertyType !== 'Apartamento' &&
+          data.property.propertyType !== 'Apartamento' &&
           <>
             <Typography fontWeight='bold' sx={{mb: 1}}>Metraje (Construc...)</Typography>
             <TextField
@@ -105,7 +106,7 @@ export default function GeneralInformation() {
                 endAdornment:
                   <InputAdornment position="end">Mt2</InputAdornment>
               }}
-              value={propertyData.footageBuilding}
+              value={data.property.footageBuilding}
               onChange={(e) => handleChange('footageBuilding', e.target.value)}
               variant="outlined"
             />
@@ -120,7 +121,7 @@ export default function GeneralInformation() {
           disabled
           fullWidth
           placeholder='Tipo de inmueble + Operacion'
-          value={propertyData.propertyType + ' ' + propertyData.operationType}
+          value={data.property.propertyType + ' ' + data.property.operationType}
           variant="outlined"
         />
       </Grid>
@@ -130,7 +131,7 @@ export default function GeneralInformation() {
           color='secondary'
           fullWidth
           placeholder='Precio'
-          value={propertyData.price}
+          value={data.property.price}
           onChange={(e) => handleChange('price', e.target.value)}
           variant="outlined"
         />
@@ -143,7 +144,7 @@ export default function GeneralInformation() {
           multiline
           rows={5}
           placeholder='Descripcion de inmueble'
-          value={propertyData.description}
+          value={data.property.description}
           onChange={(e) => handleChange('description', e.target.value)}
           variant="outlined"
         />

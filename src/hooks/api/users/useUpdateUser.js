@@ -2,12 +2,28 @@ import {useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import {useSnackbar} from "notistack";
 import axios from "../../../utils/axios";
+import * as CryptoJS from "crypto-js";
 
 export default function useUpdateUser() {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar()
 
+  const masterCryptoKey = '123456$#@$^@1ERF'
+
+  function encryptValue(keys, value){
+    const key = CryptoJS.enc.Utf8.parse(keys);
+    const iv = CryptoJS.enc.Utf8.parse(keys);
+    const encrypted = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(value.toString()), key,
+      {
+        keySize: 128 / 8,
+        iv,
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7
+      });
+
+    return encrypted.toString();
+  }
 
 
   async function editUser(data) {
@@ -19,7 +35,7 @@ export default function useUpdateUser() {
       id: data.id.toString(),
       state: data.state,
       userType: data.user_type,
-      password: data.password,
+      password: encryptValue(masterCryptoKey, data.password),
       profession: data.profession,
       socialFacebook: data.social_facebook,
       socialInstagram: data.social_instagram,

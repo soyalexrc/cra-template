@@ -8,10 +8,13 @@ import Typography from "@mui/material/Typography";
 import EditIcon from "@mui/icons-material/Edit";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import DeleteButton from "../shared/DeleteButton";
+import SearchIcon from '@mui/icons-material/Search'
 import {formatPrice} from "../../utils/format";
 
-export default function PropertiesListRow({row}) {
+export default function PropertiesListRow({row, fnDelete}) {
   const [open, setOpen] = useState(false);
+  const userType = JSON.parse(localStorage.getItem("vi-currentUser")).user_type;
+
   const navigate = useNavigate();
 
   return (
@@ -75,15 +78,24 @@ export default function PropertiesListRow({row}) {
           </Typography>
         </TableCell>
         <TableCell align='center'>
-          <Box display='flex' alignItems='center'>
-            <IconButton onClick={() => navigate('editar/user123')}>
-              <EditIcon/>
-            </IconButton>
-            <IconButton onClick={() => alert('cambiar status')}>
-              <AutorenewIcon/>
-            </IconButton>
-            <DeleteButton item='Usuario: User123' onClick={() => alert('deleted')}/>
-          </Box>
+          {
+            userType === 'Asesor inmobiliario Vision'
+              ? (
+                <IconButton onClick={() => navigate(`editar/${row.id}`)}>
+                  <SearchIcon />
+                </IconButton>
+              ) : (
+                <Box display='flex' alignItems='center'>
+                  <IconButton onClick={() => navigate(`editar/${row.id}`)}>
+                    <EditIcon/>
+                  </IconButton>
+                  <IconButton onClick={() => alert('cambiar status')}>
+                    <AutorenewIcon/>
+                  </IconButton>
+                  <DeleteButton item={`Propiedad: ${row.propertyType} ${row.operationType}`} onClick={() => fnDelete(row.id)}/>
+                </Box>
+              )
+          }
         </TableCell>
       </TableRow>
       <TableRow>

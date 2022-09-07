@@ -8,6 +8,7 @@ import usersReducer from "./slices/users";
 import ownersReducer from "./slices/owners";
 import externalAdvisersReducer from "./slices/externalAdvisers";
 import alliesReducer from "./slices/allies";
+import propertyRegisterFormReducer from "./slices/propertyRegisterForm";
 
 // ----------------------------------------------------------------------
 
@@ -25,7 +26,8 @@ const rootReducer = combineReducers({
   users: usersReducer,
   owners: ownersReducer,
   externalAdvisers: externalAdvisersReducer,
-  allies: alliesReducer
+  allies: alliesReducer,
+  propertyRegisterForm: propertyRegisterFormReducer
 });
 
 export { rootPersistConfig, rootReducer };

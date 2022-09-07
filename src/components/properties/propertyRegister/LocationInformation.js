@@ -1,6 +1,10 @@
 import {FormControl, Grid, MenuItem, Select, TextField, Typography, Autocomplete, Box} from "@mui/material";
+import useRegisterProperty from "../../../hooks/api/properties/useRegisterProperty";
 
-export default function LocationInformation({data, handleChange, users}) {
+export default function LocationInformation() {
+  const {handleLocationData: handleChange, data} = useRegisterProperty();
+  console.log(data);
+
   return (
     <Grid container spacing={4}>
       <Grid item xs={12} md={3}>
@@ -9,7 +13,7 @@ export default function LocationInformation({data, handleChange, users}) {
         <FormControl fullWidth >
 
           <Select
-            value='Venezuela'
+            value={data.location.country}
             onChange={(e) => handleChange('country', e.target.value)}
           >
             <MenuItem value='Venezuela'>Venezuela</MenuItem>
@@ -22,7 +26,7 @@ export default function LocationInformation({data, handleChange, users}) {
         <FormControl fullWidth >
 
           <Select
-            value='Carabobo'
+            value={data.location.state}
             onChange={(e) => handleChange('state', e.target.value)}
           >
             <MenuItem value='Carabobo'>Carabobo</MenuItem>
@@ -35,8 +39,8 @@ export default function LocationInformation({data, handleChange, users}) {
         <FormControl fullWidth >
 
           <Select
-            value='Naguanagua'
-            onChange={(e) => handleChange('municipality', e.target.value)}
+            value={data.location.city}
+            onChange={(e) => handleChange('city', e.target.value)}
           >
             <MenuItem value='Naguanagua'>Naguanagua</MenuItem>
           </Select>
@@ -48,8 +52,8 @@ export default function LocationInformation({data, handleChange, users}) {
         <FormControl fullWidth >
 
           <Select
-            value='La campina'
-            onChange={(e) => handleChange('urbanization', e.target.value)}
+            value={data.location.municipality}
+            onChange={(e) => handleChange('municipality', e.target.value)}
           >
             <MenuItem value='La campina'>La campina</MenuItem>
           </Select>
@@ -63,8 +67,8 @@ export default function LocationInformation({data, handleChange, users}) {
           color='secondary'
           fullWidth
           placeholder='Avenida'
-          value={''}
-          onChange={(e) => handleChange('footageGround', e.target.value)}
+          value={data.location.avenue}
+          onChange={(e) => handleChange('avenue', e.target.value)}
           variant="outlined"
         />
       </Grid>
@@ -75,19 +79,50 @@ export default function LocationInformation({data, handleChange, users}) {
           color='secondary'
           fullWidth
           placeholder='Calle'
-          value={''}
-          onChange={(e) => handleChange('footageGround', e.target.value)}
+          value={data.location.street}
+          onChange={(e) => handleChange('street', e.target.value)}
           variant="outlined"
         />
       </Grid>
+
+      {
+        data.property.propertyType === 'Apartamento' &&
+        <Grid item xs={12} md={4}>
+          <Typography fontWeight='bold' sx={{mb: 1 }}>Edificio</Typography>
+
+          <TextField
+            color='secondary'
+            fullWidth
+            placeholder='Edificio'
+            value={data.location.buildingShoppingcenter}
+            onChange={(e) => handleChange('buildingShoppingcenter', e.target.value)}
+            variant="outlined"
+          />
+        </Grid>
+      }
+      {
+        (data.property.propertyType === 'Locales Comerciales' || data.property.propertyType === 'Oficinas') &&
+        <Grid item xs={12} md={4}>
+          <Typography fontWeight='bold' sx={{mb: 1 }}>Centro comercial</Typography>
+
+          <TextField
+            color='secondary'
+            fullWidth
+            placeholder='Centro comercial'
+            value={data.location.buildingShoppingcenter}
+            onChange={(e) => handleChange('buildingShoppingcenter', e.target.value)}
+            variant="outlined"
+          />
+        </Grid>
+      }
       <Grid item xs={12} md={2}>
         <Typography fontWeight='bold' sx={{mb: 1 }}>Es calle cerrada ?</Typography>
 
         <FormControl fullWidth >
 
           <Select
-            value='Si'
-            onChange={(e) => handleChange('closedStreet', e.target.value)}
+            value={data.location.isClosedStreet}
+            onChange={(e) => handleChange('isClosedStreet', e.target.value)}
           >
             <MenuItem value='Si'>Si</MenuItem>
             <MenuItem value='No'>No</MenuItem>
@@ -100,8 +135,8 @@ export default function LocationInformation({data, handleChange, users}) {
         <FormControl fullWidth >
 
           <Select
-            value='A pie de calle'
-            onChange={(e) => handleChange('closedStreet', e.target.value)}
+            value={data.location.location}
+            onChange={(e) => handleChange('location', e.target.value)}
           >
             <MenuItem value='A pie de calle'>A pie de calle</MenuItem>
             <MenuItem value='Centro comercial'>Centro comercial</MenuItem>
@@ -117,8 +152,8 @@ export default function LocationInformation({data, handleChange, users}) {
           color='secondary'
           fullWidth
           placeholder='Numero'
-          value={''}
-          onChange={(e) => handleChange('footageGround', e.target.value)}
+          value={data.location.buildingNumber}
+          onChange={(e) => handleChange('buildingNumber', e.target.value)}
           variant="outlined"
         />
       </Grid>
@@ -129,8 +164,8 @@ export default function LocationInformation({data, handleChange, users}) {
           color='secondary'
           fullWidth
           placeholder='Piso'
-          value={''}
-          onChange={(e) => handleChange('footageGround', e.target.value)}
+          value={data.location.floor}
+          onChange={(e) => handleChange('floor', e.target.value)}
           variant="outlined"
         />
       </Grid>
@@ -143,8 +178,8 @@ export default function LocationInformation({data, handleChange, users}) {
           multiline
           rows={5}
           placeholder='Punto de referencia'
-          value={''}
-          onChange={(e) => handleChange('description', e.target.value)}
+          value={data.location.referencePoint}
+          onChange={(e) => handleChange('referencePoint', e.target.value)}
           variant="outlined"
         />
       </Grid>
@@ -157,8 +192,8 @@ export default function LocationInformation({data, handleChange, users}) {
           multiline
           rows={5}
           placeholder='Como Llegar?'
-          value={''}
-          onChange={(e) => handleChange('footageGround', e.target.value)}
+          value={data.location.howToGet}
+          onChange={(e) => handleChange('howToGet', e.target.value)}
           variant="outlined"
         />
       </Grid>
@@ -169,8 +204,8 @@ export default function LocationInformation({data, handleChange, users}) {
           color='secondary'
           fullWidth
           placeholder='Numero de estacionamiento'
-          value={'15.000.000'}
-          onChange={(e) => handleChange('propertyTitle', e.target.value)}
+          value={data.location.parkingNumber}
+          onChange={(e) => handleChange('parkingNumber', e.target.value)}
           variant="outlined"
         />
       </Grid>
@@ -181,8 +216,8 @@ export default function LocationInformation({data, handleChange, users}) {
           color='secondary'
           fullWidth
           placeholder='Numero de maletero'
-          value={'15.000.000'}
-          onChange={(e) => handleChange('propertyTitle', e.target.value)}
+          value={data.location.trunkNumber}
+          onChange={(e) => handleChange('trunkNumber', e.target.value)}
           variant="outlined"
         />
       </Grid>
@@ -192,8 +227,8 @@ export default function LocationInformation({data, handleChange, users}) {
           color='secondary'
           fullWidth
           placeholder='Nivel de estacionamiento'
-          value={'15.000.000'}
-          onChange={(e) => handleChange('propertyTitle', e.target.value)}
+          value={data.location.parkingLevel}
+          onChange={(e) => handleChange('parkingLevel', e.target.value)}
           variant="outlined"
         />
       </Grid>
@@ -204,8 +239,8 @@ export default function LocationInformation({data, handleChange, users}) {
           color='secondary'
           fullWidth
           placeholder='Nivel de maletero'
-          value={'15.000.000'}
-          onChange={(e) => handleChange('propertyTitle', e.target.value)}
+          value={data.location.trunkLevel}
+          onChange={(e) => handleChange('trunkLevel', e.target.value)}
           variant="outlined"
         />
       </Grid>

@@ -20,6 +20,10 @@ const data = [
     value: 'inicio',
     icon: <WidgetsIcon style={{ color: 'white' }} />,
     id: 2,
+    rols: [
+      'Administrador',
+      'Asesor inmobiliario Vision'
+    ]
   },
   {
     title: 'Propietarios',
@@ -27,6 +31,9 @@ const data = [
     icon: <AssignmentIndIcon style={{ color: 'white' }} />,
     value: 'propietarios',
     id: 5,
+    rols: [
+      'Administrador'
+    ],
   },
   {
     title: 'Usuarios',
@@ -34,6 +41,9 @@ const data = [
     icon: <PeopleAltIcon style={{ color: 'white' }} />,
     value: 'usuarios',
     id: 4,
+    rols: [
+      'Administrador'
+    ],
   },
   {
     title: 'Propiedades',
@@ -41,6 +51,10 @@ const data = [
     icon: <ApartmentIcon style={{ color: 'white' }} />,
     value: 'propiedades',
     id: 4,
+    rols: [
+      'Administrador',
+      'Asesor inmobiliario Vision'
+    ],
   },
   {
     title: 'Asesores Externos',
@@ -48,6 +62,9 @@ const data = [
     value: 'asesores-externos',
     icon: <GroupsIcon style={{ color: 'white' }} />,
     id: 3,
+    rols: [
+      'Administrador'
+    ],
   },
   {
     title: 'Aliados',
@@ -55,6 +72,9 @@ const data = [
     value: 'aliados',
     icon: <VolunteerActivismIcon style={{ color: 'white' }} />,
     id: 1,
+    rols: [
+      'Administrador'
+    ],
   },
   {
     title: 'Administracion',
@@ -62,22 +82,28 @@ const data = [
     icon: <AdminPanelSettingsIcon style={{ color: 'white' }} />,
     value: 'administracion',
     id: 6,
+    rols: [
+      'Administrador'
+    ],
   },
 ];
 
 export default function MenuItems({open, fn}) {
   const [selected, setSelected] = useState('');
   const navigate = useNavigate()
+  const userType = JSON.parse(localStorage.getItem('vi-currentUser')).user_type;
   const goTo = (path) => {
     fn();
     setSelected(path.replace('/', ''));
     navigate(path)
   }
 
+  console.log('routes', data)
+
   return (
     <Box sx={{color: 'white'}}>
       {
-        data.map((route, index) => (
+        data.filter(x => x.rols?.includes(userType)).map((route, index) => (
           <Box
             key={route.id}
             onClick={() => goTo(route.path)}
