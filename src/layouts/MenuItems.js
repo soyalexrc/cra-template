@@ -6,9 +6,12 @@ import WidgetsIcon from '@mui/icons-material/Widgets';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
-import BuildIcon from '@mui/icons-material/Build';
-import BadgeIcon from '@mui/icons-material/Badge';
+import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import GroupsIcon from '@mui/icons-material/Groups';
+import ApartmentIcon from '@mui/icons-material/Apartment';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 
 const data = [
   {
@@ -17,64 +20,90 @@ const data = [
     value: 'inicio',
     icon: <WidgetsIcon style={{ color: 'white' }} />,
     id: 2,
+    rols: [
+      'Administrador',
+      'Asesor inmobiliario Vision'
+    ]
   },
   {
     title: 'Propietarios',
     path: '/propietarios',
-    icon: <ShoppingCartIcon style={{ color: 'white' }} />,
+    icon: <AssignmentIndIcon style={{ color: 'white' }} />,
     value: 'propietarios',
     id: 5,
+    rols: [
+      'Administrador'
+    ],
   },
   {
     title: 'Usuarios',
     path: '/usuarios',
-    icon: <ReceiptLongIcon style={{ color: 'white' }} />,
+    icon: <PeopleAltIcon style={{ color: 'white' }} />,
     value: 'usuarios',
     id: 4,
+    rols: [
+      'Administrador'
+    ],
   },
   {
     title: 'Propiedades',
     path: '/propiedades',
-    icon: <ReceiptLongIcon style={{ color: 'white' }} />,
+    icon: <ApartmentIcon style={{ color: 'white' }} />,
     value: 'propiedades',
     id: 4,
+    rols: [
+      'Administrador',
+      'Asesor inmobiliario Vision'
+    ],
   },
   {
     title: 'Asesores Externos',
     path: '/asesores-externos',
     value: 'asesores-externos',
-    icon: <AttachMoneyIcon style={{ color: 'white' }} />,
+    icon: <GroupsIcon style={{ color: 'white' }} />,
     id: 3,
+    rols: [
+      'Administrador'
+    ],
   },
   {
     title: 'Aliados',
     path: '/aliados',
     value: 'aliados',
-    icon: <PersonIcon style={{ color: 'white' }} />,
+    icon: <VolunteerActivismIcon style={{ color: 'white' }} />,
     id: 1,
+    rols: [
+      'Administrador'
+    ],
   },
   {
     title: 'Administracion',
     path: '/administracion',
-    icon: <SignalCellularAltIcon style={{ color: 'white' }} />,
+    icon: <AdminPanelSettingsIcon style={{ color: 'white' }} />,
     value: 'administracion',
     id: 6,
+    rols: [
+      'Administrador'
+    ],
   },
 ];
 
 export default function MenuItems({open, fn}) {
   const [selected, setSelected] = useState('');
   const navigate = useNavigate()
+  const userType = JSON.parse(localStorage.getItem('vi-currentUser')).user_type;
   const goTo = (path) => {
     fn();
     setSelected(path.replace('/', ''));
     navigate(path)
   }
 
+  console.log('routes', data)
+
   return (
     <Box sx={{color: 'white'}}>
       {
-        data.map((route, index) => (
+        data.filter(x => x.rols?.includes(userType)).map((route, index) => (
           <Box
             key={route.id}
             onClick={() => goTo(route.path)}

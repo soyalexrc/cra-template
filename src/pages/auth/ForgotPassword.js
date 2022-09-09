@@ -4,6 +4,7 @@ import Page from "../../components/Page";
 import Logo from '../../assets/vision-icon.png';
 import {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
+import sidebar from "../../assets/img/sidebar-5.jpg";
 
 const RootStyle = styled(Page)(({theme}) => ({
   minHeight: "100%",
@@ -14,14 +15,19 @@ const RootStyle = styled(Page)(({theme}) => ({
 }));
 
 const IconSide = styled(Box)(({theme}) => ({
-  flex: 0.2,
+  flex: 0.4,
   backgroundColor: theme.palette.primary.main,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  [theme.breakpoints.up('md')]: {
-    flex: 0.4
-  }
+  position: 'relative',
+  backgroundImage:`url(${sidebar})`,
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center center',
+  // display: 'flex',
+  // alignItems: 'center',
+  // justifyContent: 'center',
+  // [theme.breakpoints.up('md')]: {
+  //   flex: 0.4
+  // }
 }));
 
 export default function ForgotPassword() {
@@ -41,9 +47,9 @@ export default function ForgotPassword() {
   return (
     <RootStyle title='Recuperar contraseña | Vision Inmobiliaria' sx={{ flexDirection: largeScreen ? 'row' : 'column' }}>
       <IconSide>
-        <Box component='img' src={Logo} width={largeScreen ? 150 : 75}/>
+        {/*<Box component='img' src={Logo} width={largeScreen ? 150 : 75}/>*/}
       </IconSide>
-      <Box sx={{flex: largeScreen ? 0.6 : 0.8, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+      <Box sx={{flex: 0.6, display: 'flex', alignItems: largeScreen ? 'center' : 'flex-start', mt: largeScreen ? 0 : 5, justifyContent: 'center'}}>
         <Box width={largeScreen ? 450 : '100%'} p={2}>
           <Typography align='center' variant='h6'>Recuperar contraseña</Typography>
           <Box mt={5}>

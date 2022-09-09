@@ -69,8 +69,6 @@ export default function Router() {
         {path: '', element: <PropertiesAndAttributesList />},
         {path: 'editar/:id', element: <PropertyEdit />},
         {path: 'crear', element: <PropertyRegister />},
-        {path: 'editar-atributo/:id', element: <AttributeEdit />},
-        {path: 'crear-atributo', element: <AttributeRegister />},
       ]
     },
     {
@@ -152,8 +150,6 @@ const Home = Loadable(lazy(() => import('../pages/home')));
 // properties
 const PropertyRegister = Loadable(lazy(() => import('../pages/properties/PropertyRegister')));
 const PropertyEdit = Loadable(lazy(() => import('../pages/properties/PropertyEdit')));
-const AttributeEdit = Loadable(lazy(() => import('../pages/properties/AttributeEdit')));
-const AttributeRegister = Loadable(lazy(() => import('../pages/properties/AttributeRegister')));
 const PropertiesAndAttributesList = Loadable(lazy(() => import('../pages/properties/index')))
 
 

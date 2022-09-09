@@ -14,21 +14,23 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import SearchIcon from '@mui/icons-material/Search';
 import {mockUserTable} from '../../utils/mockData';
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import Typography from "@mui/material/Typography";
 import AddIcon from "@mui/icons-material/Add";
-import { useNavigate } from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import {formatPrice} from "../../utils/format";
-import { openWhatsApp } from '../../utils/helpers';
+import {openWhatsApp} from '../../utils/helpers';
 import DeleteButton from "../../components/shared/DeleteButton";
+import Page from "../../components/Page";
+import useDeleteOwner from "../../hooks/api/owners/useDeleteOwner";
+import useGetAdvisers from "../../hooks/api/externalAdvisers/useGetAdvisers";
+import useDeleteAdviser from "../../hooks/api/externalAdvisers/useDeleteAdviser";
 
 export default function UserList() {
   const largeScreen = useMediaQuery((theme) => theme.breakpoints.up('md'))
   const navigate = useNavigate();
-  const [data, setData] = useState(mockUserTable.data);
-  const [length, setLength] = useState(mockUserTable.length);
-  const [loading, setLoading] = useState(false);
+  const {advisers, loading, getAdvisers} = useGetAdvisers();
+  const { loading: deleteLoading, deleteAdviser} = useDeleteAdviser();
   const [page, setPage] = useState(0);
   const [searchTerm, setSearchTerm] = useState('')
 
@@ -36,110 +38,123 @@ export default function UserList() {
     setPage(newPage);
   };
 
+  useEffect(() => {
+    getAdvisers();
+  }, [])
+
   return (
-    <Paper elevation={4} sx={{width: '100%', p: 2}}>
-      <Box p={2}>
-        <Box display='flex' alignItems='center' mb={2}>
-          <Typography variant='h2'>Asesores externos</Typography>
-          <Typography sx={{mx: 2}} color='gray'>2 Asesores externos registrados</Typography>
-        </Box>
-        <Grid container>
-          <Grid item xs={12} md={6}>
-            <TextField
-              value={searchTerm}
-              onChange={(e) => setSearchTerm( e.target.value)
-              }
-              sx={{width: '100%'}}
-              id="search-textfield"
-              placeholder="Buscar por nombre o email"
-              variant="outlined"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton>
-                      <SearchIcon/>
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Button fullWidth={!largeScreen} variant='contained' color='primary' sx={{display: 'flex', mt: !largeScreen && 2}} onClick={() => navigate('crear')}>
-              <AddIcon/>
-              Asesor
-            </Button>
-          </Grid>
-        </Grid>
-      </Box>
-      <Box sx={{width: '100%'}}>
-        {loading && <LinearProgress/>}
-      </Box>
-      <TableContainer>
-        <Table>
-          <TableHead sx={{ backgroundColor: theme => theme.palette.primary.main}}>
-            <TableRow>
-              <TableCell sx={{color: '#fff', fontWeight: 'bold'}}>Usuario</TableCell>
-              <TableCell sx={{color: '#fff', fontWeight: 'bold'}}>Nombre</TableCell>
-              <TableCell sx={{color: '#fff', fontWeight: 'bold'}}>Celular / WhatsApp</TableCell>
-              <TableCell sx={{color: '#fff', fontWeight: 'bold'}}>Email</TableCell>
-              <TableCell align='center' sx={{color: '#fff', fontWeight: 'bold'}}>Acciones</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {!loading && data && data.length > 0 && data.map((row) => (
-              <TableRow
-                key={row.id}
-                sx={{
-                  '&:last-child td, &:last-child th': {border: 0},
-                  transition: "background .2s",
-                  '&:hover': {
-                    backgroundColor: 'rgba(0,0,0, 0.05)'
-                  }
+    <Page title='Asesores Externos | Vision Inmobiliaria'>
+      <Paper elevation={4} sx={{width: '100%', p: 2}}>
+        <Box p={2}>
+          <Box display='flex' alignItems='center' mb={2}>
+            <Typography variant='h2'>Asesores Externos</Typography>
+            <Typography sx={{mx: 2}} color='gray'>{advisers.length} asesores registrados</Typography>
+          </Box>
+          <Grid container>
+            <Grid item xs={12} md={6}>
+              <TextField
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)
+                }
+                sx={{width: '100%'}}
+                id="search-textfield"
+                placeholder="Buscar por nombre o email"
+                variant="outlined"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton>
+                        <SearchIcon/>
+                      </IconButton>
+                    </InputAdornment>
+                  ),
                 }}
-              >
-                <TableCell>User123</TableCell>
-                <TableCell sx={{ cursor: 'pointer'}}>{row.name}</TableCell>
-                <TableCell>
-                  <Box display='flex' alignItems='center' onClick={() => openWhatsApp(row.phone)} sx={{ cursor: 'pointer' }}>
-                    <Box display='flex' alignItems='center' onClick={() => openWhatsApp(row.phone)} sx={{ cursor: 'pointer' }}>
-                      <WhatsAppIcon sx={{ mx: 1 }} fontSize='small' color='secondary'/>
-                      <Typography color='secondary' sx={{ '&:hover': { textDecoration: 'underline' } }}>
-                        {row.phone}
-                      </Typography>
-                    </Box>
-                  </Box>
-                </TableCell>
-                <TableCell>{row.email}</TableCell>
-                <TableCell align='center'>
-                  <IconButton onClick={() => navigate('editar/user123')}>
-                    <EditIcon />
-                  </IconButton>
-                  <DeleteButton item='Usuario: User123' onClick={() => alert('deleted')} />
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      {/*{loading && <Box sx={{ height: '100vh', width: '100%', display: 'flex', justifyContent: 'center' }}><LoadingScreen /></Box>}*/}
-      {
-        (!data || data.length) < 1 &&
-        <Box sx={{height: '50vh', display: 'flex', justifyContent: 'center', width: '100%', alignItems: 'center'}}>
-          <Typography>No hay clientes pendientes...</Typography>
+              />
+            </Grid>
+            <Grid item xs={12} md={6} sx={{display: 'flex', justifyContent: 'flex-end'}}>
+              <Button fullWidth={!largeScreen} variant='contained' color='primary'
+                      sx={{display: 'flex', mt: !largeScreen && 2}} onClick={() => navigate('crear')}>
+                <AddIcon/>
+                Asesor Externo
+              </Button>
+            </Grid>
+          </Grid>
         </Box>
-      }
-      <Box sx={{display: 'flex', justifyContent: 'end', pt: 5}}>
-        <Pagination
-          boundaryCount={1}
-          count={Math.round(length / 25)}
-          defaultPage={1}
-          onChange={handleChangePage}
-          page={page}
-          showFirstButton
-          showLastButton
-        />
-      </Box>
-    </Paper>
+        <Box sx={{width: '100%'}}>
+          {loading && <LinearProgress/>}
+        </Box>
+        <TableContainer>
+          <Table>
+            <TableHead sx={{backgroundColor: '#eaeaea'}}>
+              <TableRow>
+                <TableCell sx={{color: theme => theme.palette.common.black, fontWeight: 'bold'}}>Nombres</TableCell>
+                <TableCell sx={{color: theme => theme.palette.common.black, fontWeight: 'bold'}}>Apellidos</TableCell>
+                <TableCell sx={{color: theme => theme.palette.common.black, fontWeight: 'bold'}}>Celular</TableCell>
+                <TableCell sx={{color: theme => theme.palette.common.black, fontWeight: 'bold'}}>Email</TableCell>
+                <TableCell align='center'
+                           sx={{color: theme => theme.palette.common.black, fontWeight: 'bold'}}>Acciones</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {!loading && advisers && advisers.length > 0 && advisers.slice(page * 10, page * 10 + 10).map((row) => (
+                <TableRow
+                  key={row.id}
+                  sx={{
+                    '&:last-child td, &:last-child th': {border: 0},
+                    transition: "background .2s",
+                    '&:hover': {
+                      backgroundColor: 'rgba(0,0,0, 0.05)'
+                    }
+                  }}
+                >
+                  <TableCell>{row.first_name} </TableCell>
+                  <TableCell>{row.last_name}</TableCell>
+                  <TableCell>
+                    <Box>
+                      <Box display='flex' alignItems='center'>
+                        <Box display='flex' alignItems='center' onClick={() => openWhatsApp(row.phone)}
+                             sx={{cursor: 'pointer'}}>
+                          <WhatsAppIcon sx={{mx: 1}} fontSize='small' color='secondary'/>
+                          <Typography color='secondary' sx={{'&:hover': {textDecoration: 'underline'}}}>
+                            {row.phone}
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </Box>
+
+                  </TableCell>
+                  <TableCell>{row.email}</TableCell>
+                  <TableCell align='center'>
+                    <Box display='flex'>
+                      <IconButton onClick={() => navigate(`editar/${row.id}`)}>
+                        <EditIcon/>
+                      </IconButton>
+                      <DeleteButton item={`Propietario: ${row.first_name}`} onClick={() => deleteAdviser(row.id, () => getAdvisers())}/>
+                    </Box>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        {
+          (!advisers || advisers.length) < 1 &&
+          <Box sx={{height: '50vh', display: 'flex', justifyContent: 'center', width: '100%', alignItems: 'center'}}>
+            <Typography>No se encontraron propietarios...</Typography>
+          </Box>
+        }
+        <Box sx={{display: 'flex', justifyContent: 'end', pt: 5}}>
+          <Pagination
+            boundaryCount={1}
+            count={Math.round(advisers.length / 10)}
+            defaultPage={1}
+            onChange={handleChangePage}
+            page={page}
+            showFirstButton
+            showLastButton
+          />
+        </Box>
+      </Paper>
+    </Page>
   )
 }

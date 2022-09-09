@@ -23,6 +23,8 @@ import {MHidden} from "../components/@material-extend";
 import CloseIcon from '@mui/icons-material/Close'
 import sampleUser from '../assets/img/no-image.jpg'
 import bg from '../assets/img/sidebar-5.jpg';
+import {useMediaQuery} from "@mui/material";
+
 
 const drawerWidth = 300;
 
@@ -95,7 +97,8 @@ const DrawerHeader = styled('div')(({theme}) => ({
 
 
 export default function Sidebar() {
-  const {logout} = useAuth()
+  const {logout, currentUser} = useAuth()
+  const largeScreen = useMediaQuery((theme) => theme.breakpoints.up('md'))
   const [anchorEl, setAnchorEl] = useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
@@ -116,6 +119,8 @@ export default function Sidebar() {
   const handleLogout = () => {
     logout();
   }
+
+  console.log(currentUser);
 
 
   const menuId = 'primary-search-account-menu';
@@ -152,11 +157,11 @@ export default function Sidebar() {
             aria-label="open drawer"
             sx={{mr: 2}}
           >
-            <MenuIcon sx={{ color: '#fff' }} />
+            <MenuIcon sx={{color: '#fff'}}/>
           </IconButton>
           <Search>
             <SearchIconWrapper>
-              <SearchIcon sx={{ color: '#fff' }}/>
+              <SearchIcon sx={{color: '#fff'}}/>
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search…"
@@ -167,7 +172,7 @@ export default function Sidebar() {
           <Box sx={{display: 'flex'}}>
             <IconButton size="large" aria-label="show 4 new mails" color="inherit">
               <Badge badgeContent={4} color="error">
-                <MailIcon sx={{ color: '#fff' }}/>
+                <MailIcon sx={{color: '#fff'}}/>
               </Badge>
             </IconButton>
             <IconButton
@@ -176,7 +181,7 @@ export default function Sidebar() {
               color="inherit"
             >
               <Badge badgeContent={17} color="error">
-                <NotificationsIcon sx={{ color: '#fff' }}/>
+                <NotificationsIcon sx={{color: '#fff'}}/>
               </Badge>
             </IconButton>
             <IconButton
@@ -188,7 +193,7 @@ export default function Sidebar() {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle sx={{ color: '#fff' }}/>
+              <AccountCircle sx={{color: '#fff'}}/>
             </IconButton>
           </Box>
           {renderMenu}
@@ -220,18 +225,31 @@ export default function Sidebar() {
                 opacity: 0.05,
                 zIndex: -11
               },
-              width: drawerWidth,
+              width: drawerWidth + 1,
               boxSizing: 'border-box',
             },
           }}>
-          <DrawerHeader sx={{display: 'flex', alignItems: 'center', justifyContent: 'flex-start',  padding: '1.5rem 2rem'}}>
-            <Box mr={2} component='img' src={sampleUser} width={40} height={40} sx={{ borderRadius: 100 }} />
+          <DrawerHeader
+            sx={{display: 'flex', alignItems: 'center', justifyContent: 'flex-start', padding: '1.5rem 2rem'}}>
+            <Box
+              mr={2}
+              component='img'
+              onError={({currentTarget}) => {
+                currentTarget.onerror = null;
+                currentTarget.src = sampleUser
+              }}
+              src={currentUser.image ? currentUser.image : sampleUser}
+              width={40}
+              height={40}
+              sx={{borderRadius: 100}}
+            />
             <Box>
-              <Typography variant='h5' color='#fff'>Maria </Typography>
-              <Typography color='#fff'>Administrador</Typography>
+              <Typography variant='h5' color='#fff'>{currentUser?.first_name} </Typography>
+              <Typography color='#fff'>{currentUser?.user_type}</Typography>
             </Box>
           </DrawerHeader>
-          <MenuItems open={open} fn={() => {}}/>
+          <MenuItems open={open} fn={() => {
+          }}/>
         </Drawer>
       </MHidden>
       <MHidden width='mdUp'>
@@ -265,19 +283,40 @@ export default function Sidebar() {
               boxSizing: 'border-box',
             },
           }}>
-          <DrawerHeader sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between',   padding: '1.5rem 2rem'}}>
-            <Box>
-              <Typography variant='h5' color='#fff'>RenzitosAdmin</Typography>
-              <Typography color='#fff'>Admin</Typography>
+          <DrawerHeader sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1.5rem 2rem'}}>
+            <Box display='flex' alignItems='center'>
+              <Box
+                mr={2}
+                component='img'
+                onError={({currentTarget}) => {
+                  currentTarget.onerror = null;
+                  currentTarget.src = sampleUser
+                }}
+                src={currentUser.image ? currentUser.image : sampleUser}
+                width={40}
+                height={40}
+                sx={{borderRadius: 100}}
+              />
+              <Box>
+                <Typography variant='h5' color='#fff'>{currentUser?.first_name} </Typography>
+                <Typography color='#fff'>{currentUser?.user_type}</Typography>
+              </Box>
             </Box>
             <IconButton onClick={handleDrawerChange}>
-              <CloseIcon/>
+              <CloseIcon sx={{ color: '#fff' }} />
             </IconButton>
           </DrawerHeader>
           <MenuItems open={open} fn={handleDrawerChange}/>
         </Drawer>
       </MHidden>
-      <Box component="main" sx={{p: 2, width: '100%', height: '100%', minHeight: '100vh', flexGrow: 1, backgroundColor: '#fff'}}>
+      <Box component="main" sx={{
+        p: largeScreen ? 2 : 0,
+        width: '100%',
+        height: '100%',
+        minHeight: '100vh',
+        flexGrow: 1,
+        backgroundColor: '#fff'
+      }}>
         <DrawerHeader/>
         <Outlet/>
       </Box>

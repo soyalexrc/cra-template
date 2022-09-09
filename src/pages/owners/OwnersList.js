@@ -14,22 +14,22 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import SearchIcon from '@mui/icons-material/Search';
 import {mockUserTable} from '../../utils/mockData';
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import Typography from "@mui/material/Typography";
 import AddIcon from "@mui/icons-material/Add";
 import {useNavigate} from 'react-router-dom'
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import {formatPrice} from "../../utils/format";
 import {openWhatsApp} from '../../utils/helpers';
 import DeleteButton from "../../components/shared/DeleteButton";
 import Page from "../../components/Page";
+import useGetOwners from "../../hooks/api/owners/useGetOwners";
+import useDeleteOwner from "../../hooks/api/owners/useDeleteOwner";
 
-export default function OwnersList() {
+export default function UserList() {
   const largeScreen = useMediaQuery((theme) => theme.breakpoints.up('md'))
   const navigate = useNavigate();
-  const [data, setData] = useState(mockUserTable.data);
-  const [length, setLength] = useState(mockUserTable.length);
-  const [loading, setLoading] = useState(false);
+  const {owners, loading, getOwners} = useGetOwners();
+  const { loading: deleteLoading, deleteOwner} = useDeleteOwner();
   const [page, setPage] = useState(0);
   const [searchTerm, setSearchTerm] = useState('')
 
@@ -37,13 +37,19 @@ export default function OwnersList() {
     setPage(newPage);
   };
 
+  console.log(owners)
+
+  useEffect(() => {
+    getOwners();
+  }, [])
+
   return (
     <Page title='Propietarios | Vision Inmobiliaria'>
       <Paper elevation={4} sx={{width: '100%', p: 2}}>
         <Box p={2}>
           <Box display='flex' alignItems='center' mb={2}>
             <Typography variant='h2'>Propietarios</Typography>
-            <Typography sx={{mx: 2}} color='gray'>2 propietarios registrados</Typography>
+            <Typography sx={{mx: 2}} color='gray'>{owners.length} propietarios registrados</Typography>
           </Box>
           <Grid container>
             <Grid item xs={12} md={6}>
@@ -80,17 +86,18 @@ export default function OwnersList() {
         </Box>
         <TableContainer>
           <Table>
-            <TableHead sx={{backgroundColor: theme => theme.palette.primary.main}}>
+            <TableHead sx={{backgroundColor: '#eaeaea'}}>
               <TableRow>
-                <TableCell sx={{color: '#fff', fontWeight: 'bold'}}>Usuario</TableCell>
-                <TableCell sx={{color: '#fff', fontWeight: 'bold'}}>Nombre</TableCell>
-                <TableCell sx={{color: '#fff', fontWeight: 'bold'}}>Celular / WhatsApp</TableCell>
-                <TableCell sx={{color: '#fff', fontWeight: 'bold'}}>Email</TableCell>
-                <TableCell align='center' sx={{color: '#fff', fontWeight: 'bold'}}>Acciones</TableCell>
+                <TableCell sx={{color: theme => theme.palette.common.black, fontWeight: 'bold'}}>Nombres</TableCell>
+                <TableCell sx={{color: theme => theme.palette.common.black, fontWeight: 'bold'}}>Apellidos</TableCell>
+                <TableCell sx={{color: theme => theme.palette.common.black, fontWeight: 'bold'}}>Celular</TableCell>
+                <TableCell sx={{color: theme => theme.palette.common.black, fontWeight: 'bold'}}>Email</TableCell>
+                <TableCell align='center'
+                           sx={{color: theme => theme.palette.common.black, fontWeight: 'bold'}}>Acciones</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {!loading && data && data.length > 0 && data.map((row) => (
+              {!loading && owners && owners.length > 0 && owners.slice(page * 10, page * 10 + 10).map((row) => (
                 <TableRow
                   key={row.id}
                   sx={{
@@ -101,43 +108,46 @@ export default function OwnersList() {
                     }
                   }}
                 >
-                  <TableCell>User123</TableCell>
-                  <TableCell sx={{cursor: 'pointer'}}>{row.name}</TableCell>
+                  <TableCell>{row.first_name} </TableCell>
+                  <TableCell>{row.last_name}</TableCell>
                   <TableCell>
-                    <Box display='flex' alignItems='center' onClick={() => openWhatsApp(row.phone)}
-                         sx={{cursor: 'pointer'}}>
-                      <Box display='flex' alignItems='center' onClick={() => openWhatsApp(row.phone)}
-                           sx={{cursor: 'pointer'}}>
-                        <WhatsAppIcon sx={{mx: 1}} fontSize='small' color='secondary'/>
-                        <Typography color='secondary' sx={{'&:hover': {textDecoration: 'underline'}}}>
-                          {row.phone}
-                        </Typography>
+                    <Box>
+                      <Box display='flex' alignItems='center'>
+                        <Box display='flex' alignItems='center' onClick={() => openWhatsApp(row.phone)}
+                             sx={{cursor: 'pointer'}}>
+                          <WhatsAppIcon sx={{mx: 1}} fontSize='small' color='secondary'/>
+                          <Typography color='secondary' sx={{'&:hover': {textDecoration: 'underline'}}}>
+                            {row.phone}
+                          </Typography>
+                        </Box>
                       </Box>
                     </Box>
+
                   </TableCell>
                   <TableCell>{row.email}</TableCell>
                   <TableCell align='center'>
-                    <IconButton onClick={() => navigate('editar/user123')}>
-                      <EditIcon/>
-                    </IconButton>
-                    <DeleteButton item='Usuario: User123' onClick={() => alert('deleted')}/>
+                    <Box display='flex'>
+                      <IconButton onClick={() => navigate(`editar/${row.id}`)}>
+                        <EditIcon/>
+                      </IconButton>
+                      <DeleteButton item={`Propietario: ${row.first_name}`} onClick={() => deleteOwner(row.id, () => getOwners())}/>
+                    </Box>
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
-        {/*{loading && <Box sx={{ height: '100vh', width: '100%', display: 'flex', justifyContent: 'center' }}><LoadingScreen /></Box>}*/}
         {
-          (!data || data.length) < 1 &&
+          (!owners || owners.length) < 1 &&
           <Box sx={{height: '50vh', display: 'flex', justifyContent: 'center', width: '100%', alignItems: 'center'}}>
-            <Typography>No hay clientes pendientes...</Typography>
+            <Typography>No se encontraron propietarios...</Typography>
           </Box>
         }
         <Box sx={{display: 'flex', justifyContent: 'end', pt: 5}}>
           <Pagination
             boundaryCount={1}
-            count={Math.round(length / 25)}
+            count={Math.round(owners.length / 10)}
             defaultPage={1}
             onChange={handleChangePage}
             page={page}
