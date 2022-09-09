@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {Box, Collapse, IconButton, TableCell, TableRow} from "@mui/material";
+import {Box, Collapse, IconButton, TableCell, TableRow, Tooltip} from "@mui/material";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import noImage from "../../assets/vision-icon.png";
@@ -9,13 +9,27 @@ import EditIcon from "@mui/icons-material/Edit";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import DeleteButton from "../shared/DeleteButton";
 import SearchIcon from '@mui/icons-material/Search'
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import {formatPrice} from "../../utils/format";
+import useProperties from "../../hooks/api/properties/useProperties";
+import useRegisterProperty from "../../hooks/api/properties/useRegisterProperty";
+import PreviewModal from "./PreviewModal";
+import ChangeStatusModal from "./ChangeStatusModal";
 
-export default function PropertiesListRow({row, fnDelete}) {
+export default function PropertiesListRow({row, }) {
   const [open, setOpen] = useState(false);
+  const {getPropertyById, loading, deleteProperty} = useProperties();
+  const {data} = useRegisterProperty();
+  const [openModal, setOpenModal] = useState(false);
+  const [statusModal, setStatusModal] = useState(false);
   const userType = JSON.parse(localStorage.getItem("vi-currentUser")).user_type;
 
   const navigate = useNavigate();
+
+  const openPreview = async (row) => {
+    setOpenModal(true);
+    await getPropertyById(row.id);
+  }
 
   return (
     <>
@@ -82,17 +96,29 @@ export default function PropertiesListRow({row, fnDelete}) {
             userType === 'Asesor inmobiliario Vision'
               ? (
                 <IconButton onClick={() => navigate(`editar/${row.id}`)}>
-                  <SearchIcon />
+                  <SearchIcon/>
                 </IconButton>
               ) : (
                 <Box display='flex' alignItems='center'>
-                  <IconButton onClick={() => navigate(`editar/${row.id}`)}>
-                    <EditIcon/>
-                  </IconButton>
-                  <IconButton onClick={() => alert('cambiar status')}>
-                    <AutorenewIcon/>
-                  </IconButton>
-                  <DeleteButton item={`Propiedad: ${row.propertyType} ${row.operationType}`} onClick={() => fnDelete(row.id)}/>
+                  <Tooltip title='Editar propiedad'>
+                    <IconButton onClick={() => navigate(`editar/${row.id}`)}>
+                      <EditIcon/>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title='Cambiar estatus'>
+                    <IconButton onClick={() => setStatusModal(true)}>
+                      <AutorenewIcon/>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title='Vista preeliminar '>
+                    <IconButton onClick={() => openPreview(row)}>
+                      <OpenInNewIcon/>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title='Eliminar propiedad'>
+                    <DeleteButton item={`Propiedad: ${row.propertyType} ${row.operationType}`}
+                                  onClick={() => deleteProperty(row.id)}/>
+                  </Tooltip>
                 </Box>
               )
           }
@@ -130,6 +156,8 @@ export default function PropertiesListRow({row, fnDelete}) {
           </Collapse>
         </TableCell>
       </TableRow>
+      <PreviewModal open={openModal} setOpen={setOpenModal} data={data} loading={loading}/>
+      <ChangeStatusModal data={row} open={statusModal} setOpen={setStatusModal} />
     </>
   )
 }

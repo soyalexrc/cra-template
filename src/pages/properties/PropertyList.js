@@ -159,7 +159,7 @@ export default function PropertyList() {
           </TableHead>
           <TableBody>
             {!loading && properties.data && properties.data.length > 0 && properties.data.map((row) => (
-              <PropertiesListRow key={row.id} row={row} fnDelete={() => {}}/>
+              <PropertiesListRow key={row.id} row={row}/>
             ))}
           </TableBody>
         </Table>

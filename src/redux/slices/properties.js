@@ -4,7 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 // ----------------------------------------------------------------------
 
 const initialState = {
-  properties: [],
+  properties: {},
   currentProperty: {},
 };
 
@@ -22,7 +22,7 @@ const slice = createSlice({
     },
 
     removeProperty(state, {payload}) {
-      const properties = [...state.properties];
+      const properties = {...state.properties};
       const index = properties.data.findIndex(property => property.id === payload);
       properties.data.splice(index, 1);
       properties.total -= 1;

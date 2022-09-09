@@ -30,13 +30,14 @@ export default function UserList() {
   const navigate = useNavigate();
   const {owners, loading, getOwners} = useGetOwners();
   const { loading: deleteLoading, deleteOwner} = useDeleteOwner();
-  const [length, setLength] = useState(mockUserTable.length);
   const [page, setPage] = useState(0);
   const [searchTerm, setSearchTerm] = useState('')
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
+
+  console.log(owners)
 
   useEffect(() => {
     getOwners();
@@ -48,7 +49,7 @@ export default function UserList() {
         <Box p={2}>
           <Box display='flex' alignItems='center' mb={2}>
             <Typography variant='h2'>Propietarios</Typography>
-            <Typography sx={{mx: 2}} color='gray'> propietarios registrados</Typography>
+            <Typography sx={{mx: 2}} color='gray'>{owners.length} propietarios registrados</Typography>
           </Box>
           <Grid container>
             <Grid item xs={12} md={6}>
@@ -96,7 +97,7 @@ export default function UserList() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {!loading && owners && owners.length > 0 && owners.map((row) => (
+              {!loading && owners && owners.length > 0 && owners.slice(page * 10, page * 10 + 10).map((row) => (
                 <TableRow
                   key={row.id}
                   sx={{
@@ -146,7 +147,7 @@ export default function UserList() {
         <Box sx={{display: 'flex', justifyContent: 'end', pt: 5}}>
           <Pagination
             boundaryCount={1}
-            count={Math.round(length / 25)}
+            count={Math.round(owners.length / 10)}
             defaultPage={1}
             onChange={handleChangePage}
             page={page}

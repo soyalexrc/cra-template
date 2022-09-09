@@ -31,7 +31,6 @@ export default function UserList() {
   const navigate = useNavigate();
   const {advisers, loading, getAdvisers} = useGetAdvisers();
   const { loading: deleteLoading, deleteAdviser} = useDeleteAdviser();
-  const [length, setLength] = useState(mockUserTable.length);
   const [page, setPage] = useState(0);
   const [searchTerm, setSearchTerm] = useState('')
 
@@ -49,7 +48,7 @@ export default function UserList() {
         <Box p={2}>
           <Box display='flex' alignItems='center' mb={2}>
             <Typography variant='h2'>Asesores Externos</Typography>
-            <Typography sx={{mx: 2}} color='gray'> asesores registrados</Typography>
+            <Typography sx={{mx: 2}} color='gray'>{advisers.length} asesores registrados</Typography>
           </Box>
           <Grid container>
             <Grid item xs={12} md={6}>
@@ -97,7 +96,7 @@ export default function UserList() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {!loading && advisers && advisers.length > 0 && advisers.map((row) => (
+              {!loading && advisers && advisers.length > 0 && advisers.slice(page * 10, page * 10 + 10).map((row) => (
                 <TableRow
                   key={row.id}
                   sx={{
@@ -147,7 +146,7 @@ export default function UserList() {
         <Box sx={{display: 'flex', justifyContent: 'end', pt: 5}}>
           <Pagination
             boundaryCount={1}
-            count={Math.round(length / 25)}
+            count={Math.round(advisers.length / 10)}
             defaultPage={1}
             onChange={handleChangePage}
             page={page}

@@ -12,7 +12,7 @@ const slice = createSlice({
   initialState,
   reducers: {
     setAttributes(state, {payload}) {
-      state.attributes = payload;
+      state.attributes = payload.filter(x => x.category === 'Custom');
     },
 
     removeAttribute(state, {payload}) {

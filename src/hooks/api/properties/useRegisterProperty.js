@@ -12,7 +12,7 @@ import {
   handleUpdateFiles,
   setCurrentProperty,
   removeImage,
-  orderImages
+  orderImages, setInitialData
 } from '../../../redux/slices/propertyRegisterForm'
 import {useState} from 'react';
 import {v4 as uuidv4} from 'uuid';
@@ -25,7 +25,7 @@ import {sleep} from "../../../utils/helpers";
 export default function useRegisterProperty() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {data} = useSelector(state => state.propertyRegisterForm)
+  const {data, } = useSelector(state => state.propertyRegisterForm)
   const [loading, setLoading] = useState(false);
   const [updateLoading, setUpdateLoading] = useState(false);
   const [createLoading, setCreateLoading] = useState(false);
@@ -72,6 +72,10 @@ export default function useRegisterProperty() {
 
   const handleLocationData = (data) => {
     dispatch(handleChangeLocation(data))
+  }
+
+  const handleSetInitialData = () => {
+    dispatch(setInitialData())
   }
 
   const handleAttributeData = (index, value) => {
@@ -147,12 +151,12 @@ export default function useRegisterProperty() {
     console.log('termine')
   }
 
-  const handleRemoveImage = () => {
-
+  const handleRemoveImage = (id) => {
+    dispatch(removeImage(id))
   }
 
-  const handleOrderImage = () => {
-
+  const handleSortImages = (images) => {
+    dispatch(orderImages(images))
   }
 
   const handleSubmitData = async () => {
@@ -195,7 +199,7 @@ export default function useRegisterProperty() {
     updateLoading,
     handlePropertyData,
     handleLocationData,
-    handleOrderImage,
+    handleSortImages,
     handleRemoveImage,
     handleAddImage,
     handleAttributeData,
@@ -206,6 +210,7 @@ export default function useRegisterProperty() {
     handleFilesData,
     updateFiles,
     handleSubmitData,
-    handleUpdateData
+    handleUpdateData,
+    handleSetInitialData
   };
 }

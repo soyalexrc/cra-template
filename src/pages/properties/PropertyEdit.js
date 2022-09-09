@@ -21,6 +21,7 @@ import useRegisterProperty from "../../hooks/api/properties/useRegisterProperty"
 import AttributesInformation from "../../components/properties/propertyEdit/AttributesInformation";
 import useProperties from "../../hooks/api/properties/useProperties";
 import SmallLoading from "../../components/SmallLoading";
+import PreviewModal from "../../components/properties/PreviewModal";
 
 
 export default function PropertyRegister() {
@@ -29,6 +30,7 @@ export default function PropertyRegister() {
   const {id} = useParams();
   const {getPropertyById, loading} = useProperties()
   const [expanded, setExpanded] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
     getPropertyById(id)
@@ -50,8 +52,8 @@ export default function PropertyRegister() {
         !loading &&
         <Paper elevation={3} sx={{ p: 3 }}>
           <Box display='flex' justifyContent='space-between' flexWrap='wrap' my={3}>
-            <Typography variant='h2'>Registro de propiedad</Typography>
-            <Button fullWidth={!largeScreen} sx={{ mt: !largeScreen && 2 }} variant='outlined' color='primary'>Vista previa</Button>
+            <Typography variant='h2'>Edicion de propiedad</Typography>
+            <Button fullWidth={!largeScreen} sx={{ mt: !largeScreen && 2 }} onClick={() => setOpenModal(true)} variant='outlined' color='primary'>Vista previa</Button>
           </Box>
           <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
             <AccordionSummary
@@ -155,7 +157,7 @@ export default function PropertyRegister() {
           <Button sx={{ my: 5 }} disabled={updateLoading || expanded} onClick={submitData} fullWidth variant='contained' color='primary'>{updateLoading ? 'Guardando cambios': expanded ? 'Cierra los paneles para guardar los cambios' : 'Guardar cambios'}</Button>
         </Paper>
       }
-
+      <PreviewModal data={data} open={openModal} setOpen={setOpenModal} loading={false} />
     </Page>
   )
 }

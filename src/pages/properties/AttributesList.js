@@ -28,7 +28,7 @@ export default function AttributesList() {
   const navigate = useNavigate();
   const { getAttributes, attributes, loading, deleteAttribute } = useAttributes();
   const [filteredData, setFilteredData] = useState(attributes);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [searchTerm, setSearchTerm] = useState('')
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const [openDrawer, setOpenDrawer] = useState(false)

@@ -31,7 +31,6 @@ export default function UserList() {
   const navigate = useNavigate();
   const {users, loading, getUsers} = useGetUsers();
   const { loading: deleteLoading, deleteUser} = useDeleteUser();
-  const [length, setLength] = useState(mockUserTable.length);
   const [page, setPage] = useState(0);
   const [searchTerm, setSearchTerm] = useState('')
 
@@ -49,7 +48,7 @@ export default function UserList() {
         <Box p={2}>
           <Box display='flex' alignItems='center' mb={2}>
             <Typography variant='h2'>Usuarios</Typography>
-            <Typography sx={{mx: 2}} color='gray'>2 usuarios registrados</Typography>
+            <Typography sx={{mx: 2}} color='gray'>{users.length} usuarios registrados</Typography>
           </Box>
           <Grid container>
             <Grid item xs={12} md={6}>
@@ -97,7 +96,7 @@ export default function UserList() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {!loading && users && users.length > 0 && users.map((row) => (
+              {!loading && users && users.length > 0 && users.slice(page * 10, page * 10 + 10).map((row) => (
                 <TableRow
                   key={row.id}
                   sx={{
@@ -160,7 +159,8 @@ export default function UserList() {
         <Box sx={{display: 'flex', justifyContent: 'end', pt: 5}}>
           <Pagination
             boundaryCount={1}
-            count={Math.round(length / 25)}
+            count={Math.round(users.length / 10)}
+            rowsPerPage={10}
             defaultPage={1}
             onChange={handleChangePage}
             page={page}
