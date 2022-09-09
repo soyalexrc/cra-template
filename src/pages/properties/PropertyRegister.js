@@ -18,64 +18,24 @@ import PhotosInformation from "../../components/properties/propertyRegister/Phot
 import NegotiationInformation from "../../components/properties/propertyRegister/NegotiationInformation";
 import LegalDocumentsInformation from "../../components/properties/propertyRegister/LegalDocumentsInformation";
 import useRegisterProperty from "../../hooks/api/properties/useRegisterProperty";
+import AttributesInformation from "../../components/properties/propertyRegister/AttributesInformation";
 
 
 export default function PropertyRegister() {
   const largeScreen = useMediaQuery(theme => theme.breakpoints.up('md'))
+  const { data, handleSubmitData, createLoading } = useRegisterProperty();
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
-  const [images, setImages] = useState([])
-  const [files, setFiles] = useState([
-    {
-      id: null,
-      imageData: null,
-      imageType: null,
-      label: 'Titulo de propiedad',
-      name: 'title'
-    },
-    {
-      id: null,
-      imageData: null,
-      imageType: null,
-      label: 'Cedula catastral',
-      name: 'catastralIdentification'
-    },
-    {
-      id: null,
-      imageData: null,
-      imageType: null,
-      label: 'Cedula de propietario',
-      name: 'ownerIdentification'
-    },
-    {
-      id: null,
-      imageData: null,
-      imageType: null,
-      label: 'Convenio Compra / Venta',
-      name: 'agreement'
-    },
-    {
-      id: null,
-      imageData: null,
-      imageType: null,
-      label: 'Otro',
-      name: 'other'
-    },
-
-  ])
-  const [location, setLocation] = useState({
-
-  })
-  const [clientData, setClientData] = useState({
-
-  })
 
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 
-
+const submitData = async () => {
+  setExpanded(false);
+  await handleSubmitData()
+}
 
   return (
     <Page title='Registrar propiedad | Vision Inmobiliaria'>
@@ -98,7 +58,7 @@ export default function PropertyRegister() {
 
           </AccordionSummary>
           <AccordionDetails>
-            <GeneralInformation />
+            <GeneralInformation event={expanded} />
           </AccordionDetails>
         </Accordion>
         <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
@@ -115,7 +75,7 @@ export default function PropertyRegister() {
 
           </AccordionSummary>
           <AccordionDetails>
-            <LocationInformation />
+            <LocationInformation event={expanded} />
           </AccordionDetails>
         </Accordion>
         <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
@@ -134,7 +94,7 @@ export default function PropertyRegister() {
           <PhotosInformation />
           </AccordionDetails>
         </Accordion>
-        <Accordion expanded={expanded === 'panel4'} disabled onChange={handleChange('panel4')}>
+        <Accordion expanded={expanded === 'panel4'} disabled={data.attributes.length < 1} onChange={handleChange('panel4')}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon color='secondary' />}
             aria-controls="panel4bh-content"
@@ -148,10 +108,7 @@ export default function PropertyRegister() {
 
           </AccordionSummary>
           <AccordionDetails>
-            <Typography>
-              Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit
-              amet egestas eros, vitae egestas augue. Duis vel est augue.
-            </Typography>
+            <AttributesInformation />
           </AccordionDetails>
         </Accordion>
         <Accordion expanded={expanded === 'panel5'} onChange={handleChange('panel5')}>
@@ -167,7 +124,7 @@ export default function PropertyRegister() {
             </Box>
           </AccordionSummary>
           <AccordionDetails>
-            <NegotiationInformation />
+            <NegotiationInformation event={expanded} />
           </AccordionDetails>
         </Accordion>
         <Accordion expanded={expanded === 'panel6'} onChange={handleChange('panel6')}>
@@ -183,10 +140,10 @@ export default function PropertyRegister() {
             </Box>
           </AccordionSummary>
           <AccordionDetails>
-            <LegalDocumentsInformation />
+            <LegalDocumentsInformation event={expanded} />
           </AccordionDetails>
         </Accordion>
-        <Button sx={{ my: 5 }} fullWidth variant='contained' color='primary'>Registrar</Button>
+        <Button disabled={createLoading} sx={{ my: 5 }} onClick={submitData} fullWidth variant='contained' color='primary'>{createLoading ? 'Registrando informacion': 'Registrar propiedad'}</Button>
       </Paper>
 
     </Page>

@@ -6,7 +6,6 @@ import {useEffect, useState} from "react";
 export default function LocationInformation({event}) {
   const {handleLocationData, data} = useRegisterProperty();
   const [location, setLocation] = useState({...data.location})
-  console.log(data);
 
   const handleChange = (index, value) => {
     setLocation(prevState => ({

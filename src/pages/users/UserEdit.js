@@ -50,6 +50,8 @@ export default function UserEdit() {
       padding: CryptoJS.pad.Pkcs7
     });
 
+    console.log('decrypted', decrypted.toString(CryptoJS.enc.Utf8));
+
     return decrypted.toString(CryptoJS.enc.Utf8);
   }
 
@@ -62,7 +64,7 @@ export default function UserEdit() {
   }, [currentUser])
 
   useEffect(() => {
-    if (currentUser) {
+    if (currentUser.password) {
       setUserData(prevState => ({
         ...prevState,
         password: decryptValue(masterCryptoKey, prevState.password)

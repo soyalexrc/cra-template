@@ -12,6 +12,8 @@ export default function GeneralInformation({event}) {
   } = useRegisterProperty();
   const [property, setProperty] = useState({...data.property})
 
+  console.log('data', data);
+
   const handleChange = async (index, value) => {
     setProperty(prevState => ({
       ...prevState,

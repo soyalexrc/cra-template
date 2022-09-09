@@ -1,7 +1,8 @@
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import { useSnackbar } from 'notistack'
 import {useDispatch, useSelector} from "../../../redux/store";
-import { removeProperty, setCurrentProperty, setProperties } from '../../../redux/slices/properties'
+import { removeProperty, setProperties } from '../../../redux/slices/properties';
+import { setCurrentProperty } from '../../../redux/slices/propertyRegisterForm';
 import axios from "../../../utils/axios";
 
 export default function useProperties() {
@@ -16,6 +17,20 @@ export default function useProperties() {
       const response = await axios.post('property/getallDataFilter', data);
       if (response.status === 200) {
         dispatch(setProperties(response.data))
+      }
+    } catch (err) {
+      enqueueSnackbar(`Error ${JSON.stringify(err)}`, { variant: 'error' })
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function getPropertyById(id) {
+    try {
+      setLoading(true);
+      const response = await axios.get(`property/getById?id=${id}`);
+      if (response.status === 200) {
+        dispatch(setCurrentProperty(response.data))
       }
     } catch (err) {
       enqueueSnackbar(`Error ${JSON.stringify(err)}`, { variant: 'error' })
@@ -40,5 +55,5 @@ export default function useProperties() {
 
   }
 
-  return {getProperties, loading, properties};
+  return {getProperties, loading, properties, getPropertyById};
 }

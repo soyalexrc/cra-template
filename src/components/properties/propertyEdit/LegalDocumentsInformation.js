@@ -58,7 +58,7 @@ export default function LegalDocumentsInformation({event}) {
                 </Box>
               </Grid>
             )
-          } else {
+          } else if (file.type === 'select'){
             return (
               <Grid item xs={12} md={4}>
                 <Typography fontWeight='bold' sx={{mb: 1}} color='primary'>{file.label}</Typography>

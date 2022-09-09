@@ -6,7 +6,6 @@ import {useRef} from 'react';
 export default function PhotosInformation({handleChangeMedia}) {
   const {loading, data, handleAddImage, handleRemoveImage, handleSortImage} = useRegisterProperty();
   const inputRef = useRef();
-  console.log(loading);
 
   return (
     <Box>
