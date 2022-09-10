@@ -15,3 +15,9 @@ export function formatNumber(phone) {
   }
 
 }
+
+export function formatDate(dateStr) {
+  const date = dateStr.split('T')[0];
+  const time = dateStr.split('T')[1].split('.')[0];
+  return `${date} - ${time}`
+}

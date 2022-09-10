@@ -6,6 +6,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   properties: {},
   currentProperty: {},
+  history: {}
 };
 
 const slice = createSlice({
@@ -15,6 +16,10 @@ const slice = createSlice({
 
     setCurrentProperty(state, {payload}) {
       state.currentProperty= payload;
+    },
+
+    setPropertyHistory(state, {payload}) {
+      state.history= payload;
     },
 
     setProperties(state, {payload}) {
@@ -31,7 +36,7 @@ const slice = createSlice({
   },
 });
 
-export const { setCurrentProperty, setProperties, removeProperty } = slice.actions;
+export const { setCurrentProperty, setProperties, removeProperty, setPropertyHistory } = slice.actions;
 
 // Reducer
 export default slice.reducer;

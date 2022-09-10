@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {Box, Collapse, IconButton, TableCell, TableRow, Tooltip} from "@mui/material";
+import {Box, Button, Collapse, IconButton, TableCell, TableRow, Tooltip} from "@mui/material";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import noImage from "../../assets/vision-icon.png";
@@ -15,20 +15,28 @@ import useProperties from "../../hooks/api/properties/useProperties";
 import useRegisterProperty from "../../hooks/api/properties/useRegisterProperty";
 import PreviewModal from "./PreviewModal";
 import ChangeStatusModal from "./ChangeStatusModal";
+import HistoryModal from "./HistoryModal";
 
 export default function PropertiesListRow({row, }) {
   const [open, setOpen] = useState(false);
-  const {getPropertyById, loading, deleteProperty} = useProperties();
+  const {getPropertyById, loading, deleteProperty, getPropertyHistory, history: historyData} = useProperties();
   const {data} = useRegisterProperty();
-  const [openModal, setOpenModal] = useState(false);
+  const [previewModal, setPreviewModal] = useState(false);
   const [statusModal, setStatusModal] = useState(false);
+  const [historyModal, setHistoryModal] = useState(false);
   const userType = JSON.parse(localStorage.getItem("vi-currentUser")).user_type;
 
   const navigate = useNavigate();
 
   const openPreview = async (row) => {
-    setOpenModal(true);
+    setPreviewModal(true);
     await getPropertyById(row.id);
+  }
+
+  const openHistoryModal = async (id) => {
+    console.log(id)
+    setHistoryModal(true);
+    await getPropertyHistory(id);
   }
 
   return (
@@ -92,14 +100,11 @@ export default function PropertiesListRow({row, }) {
           </Typography>
         </TableCell>
         <TableCell align='center'>
-          {
-            userType === 'Asesor inmobiliario Vision'
-              ? (
-                <IconButton onClick={() => navigate(`editar/${row.id}`)}>
-                  <SearchIcon/>
-                </IconButton>
-              ) : (
-                <Box display='flex' alignItems='center'>
+          <Box>
+            <Box display='flex' alignItems='center'>
+              {
+                userType === 'Administrador' &&
+                <>
                   <Tooltip title='Editar propiedad'>
                     <IconButton onClick={() => navigate(`editar/${row.id}`)}>
                       <EditIcon/>
@@ -119,9 +124,19 @@ export default function PropertiesListRow({row, }) {
                     <DeleteButton item={`Propiedad: ${row.propertyType} ${row.operationType}`}
                                   onClick={() => deleteProperty(row.id)}/>
                   </Tooltip>
-                </Box>
-              )
-          }
+                </>
+              }
+              {
+                userType === 'Asesor inmobiliario Vision' &&
+                <Tooltip title='Vista preeliminar '>
+                  <IconButton onClick={() => openPreview(row)}>
+                    <OpenInNewIcon/>
+                  </IconButton>
+                </Tooltip>
+              }
+            </Box>
+            <Button variant='text' fullWidth size='small' onClick={() => openHistoryModal(row.id)}>Ver historial</Button>
+          </Box>
         </TableCell>
       </TableRow>
       <TableRow>
@@ -156,7 +171,8 @@ export default function PropertiesListRow({row, }) {
           </Collapse>
         </TableCell>
       </TableRow>
-      <PreviewModal open={openModal} setOpen={setOpenModal} data={data} loading={loading}/>
+      <PreviewModal open={previewModal} setOpen={setPreviewModal} data={data} loading={loading}/>
+      <HistoryModal open={historyModal} setOpen={setHistoryModal} data={historyData} loading={loading}/>
       <ChangeStatusModal data={row} open={statusModal} setOpen={setStatusModal} />
     </>
   )

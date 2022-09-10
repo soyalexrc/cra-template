@@ -1,13 +1,13 @@
 import {useState} from 'react';
 import { useSnackbar } from 'notistack'
 import {useDispatch, useSelector} from "../../../redux/store";
-import { removeProperty, setProperties } from '../../../redux/slices/properties';
+import { removeProperty, setProperties, setPropertyHistory } from '../../../redux/slices/properties';
 import { setCurrentProperty } from '../../../redux/slices/propertyRegisterForm';
 import axios from "../../../utils/axios";
 
 export default function useProperties() {
   const dispatch = useDispatch();
-  const {properties} = useSelector(state => state.properties);
+  const {properties, history} = useSelector(state => state.properties);
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar()
 
@@ -36,6 +36,20 @@ export default function useProperties() {
       enqueueSnackbar(`Error ${JSON.stringify(err)}`, { variant: 'error' })
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function getPropertyHistory(id) {
+    try {
+      setLoading(true)
+      const response = await axios.get(`property/getHistoricByPropertyId?property_id=${id}`);
+      if (response.status === 200) {
+        dispatch(setPropertyHistory(response.data));
+      }
+    } catch (e) {
+      enqueueSnackbar('No se consiguio informacion de esta propiedad, ocurrio un error!', {variant: 'error'})
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -68,5 +82,5 @@ export default function useProperties() {
       enqueueSnackbar('No se pudo cambiar el estatus de la propiedad, ocurrio un error!', {variant: 'error'})
     }
   }
-  return {getProperties, loading, properties, getPropertyById, deleteProperty, updateStatusProperty};
+  return {getProperties, loading, properties, getPropertyById, deleteProperty, updateStatusProperty, getPropertyHistory, history};
 }

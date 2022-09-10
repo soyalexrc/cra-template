@@ -15,76 +15,68 @@ import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 
 const data = [
   {
-    title: 'Inicio',
-    path: '/',
-    value: 'inicio',
-    icon: <WidgetsIcon style={{ color: 'white' }} />,
+    title: "Inicio",
+    path: "/",
+    value: "inicio",
+    icon: <WidgetsIcon style={{ color: "white" }} />,
     id: 2,
     rols: [
-      'Administrador',
-      'Asesor inmobiliario Vision'
-    ]
+      "Administrador",
+      "Asesor inmobiliario Vision",
+      "Coordinador de servicios",
+    ],
   },
   {
-    title: 'Propietarios',
-    path: '/propietarios',
-    icon: <AssignmentIndIcon style={{ color: 'white' }} />,
-    value: 'propietarios',
+    title: "Propietarios",
+    path: "/propietarios",
+    icon: <AssignmentIndIcon style={{ color: "white" }} />,
+    value: "propietarios",
     id: 5,
-    rols: [
-      'Administrador'
-    ],
+    rols: ["Administrador"],
   },
   {
-    title: 'Usuarios',
-    path: '/usuarios',
-    icon: <PeopleAltIcon style={{ color: 'white' }} />,
-    value: 'usuarios',
+    title: "Usuarios",
+    path: "/usuarios",
+    icon: <PeopleAltIcon style={{ color: "white" }} />,
+    value: "usuarios",
+    id: 4,
+    rols: ["Administrador"],
+  },
+  {
+    title: "Propiedades",
+    path: "/propiedades",
+    icon: <ApartmentIcon style={{ color: "white" }} />,
+    value: "propiedades",
     id: 4,
     rols: [
-      'Administrador'
+      "Administrador",
+      "Asesor inmobiliario Vision",
+      "Coordinador de servicios",
     ],
   },
   {
-    title: 'Propiedades',
-    path: '/propiedades',
-    icon: <ApartmentIcon style={{ color: 'white' }} />,
-    value: 'propiedades',
-    id: 4,
-    rols: [
-      'Administrador',
-      'Asesor inmobiliario Vision'
-    ],
-  },
-  {
-    title: 'Asesores Externos',
-    path: '/asesores-externos',
-    value: 'asesores-externos',
-    icon: <GroupsIcon style={{ color: 'white' }} />,
+    title: "Asesores Externos",
+    path: "/asesores-externos",
+    value: "asesores-externos",
+    icon: <GroupsIcon style={{ color: "white" }} />,
     id: 3,
-    rols: [
-      'Administrador'
-    ],
+    rols: ["Administrador"],
   },
   {
-    title: 'Aliados',
-    path: '/aliados',
-    value: 'aliados',
-    icon: <VolunteerActivismIcon style={{ color: 'white' }} />,
+    title: "Aliados",
+    path: "/aliados",
+    value: "aliados",
+    icon: <VolunteerActivismIcon style={{ color: "white" }} />,
     id: 1,
-    rols: [
-      'Administrador'
-    ],
+    rols: ["Administrador"],
   },
   {
-    title: 'Administracion',
-    path: '/administracion',
-    icon: <AdminPanelSettingsIcon style={{ color: 'white' }} />,
-    value: 'administracion',
+    title: "Administracion",
+    path: "/administracion",
+    icon: <AdminPanelSettingsIcon style={{ color: "white" }} />,
+    value: "administracion",
     id: 6,
-    rols: [
-      'Administrador'
-    ],
+    rols: ["Administrador"],
   },
 ];
 
