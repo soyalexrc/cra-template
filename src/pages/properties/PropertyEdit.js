@@ -119,7 +119,7 @@ export default function PropertyRegister() {
 
             </AccordionSummary>
             <AccordionDetails>
-              <AttributesInformation />
+              <AttributesInformation event={expanded} />
             </AccordionDetails>
           </Accordion>
           <Accordion expanded={expanded === 'panel5'} onChange={handleChange('panel5')}>

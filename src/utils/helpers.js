@@ -21,3 +21,7 @@ export function formatDate(dateStr) {
   const time = dateStr.split('T')[1].split('.')[0];
   return `${date} - ${time}`
 }
+
+export function openExternalUrl(url) {
+  window.open(url, '_blank', {})
+}

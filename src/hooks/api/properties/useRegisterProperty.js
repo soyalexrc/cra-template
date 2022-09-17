@@ -78,8 +78,8 @@ export default function useRegisterProperty() {
     dispatch(setInitialData())
   }
 
-  const handleAttributeData = (index, value) => {
-    dispatch(handleChangeAttribute({index, value}));
+  const handleAttributeData = (data) => {
+    dispatch(handleChangeAttribute(data));
   }
 
   const handleClientData = (data) => {
