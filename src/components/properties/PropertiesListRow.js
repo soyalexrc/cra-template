@@ -16,14 +16,17 @@ import useRegisterProperty from "../../hooks/api/properties/useRegisterProperty"
 import PreviewModal from "./PreviewModal";
 import ChangeStatusModal from "./ChangeStatusModal";
 import HistoryModal from "./HistoryModal";
+import ComissionModal from "./ComissionModal";
 
 export default function PropertiesListRow({row, }) {
+  console.log('row', row);
   const [open, setOpen] = useState(false);
   const {getPropertyById, loading, deleteProperty, getPropertyHistory, history: historyData} = useProperties();
   const {data} = useRegisterProperty();
   const [previewModal, setPreviewModal] = useState(false);
   const [statusModal, setStatusModal] = useState(false);
   const [historyModal, setHistoryModal] = useState(false);
+  const [comissionModal, setComissionModal] = useState(false);
   const userType = JSON.parse(localStorage.getItem("vi-currentUser")).user_type;
 
   const navigate = useNavigate();
@@ -37,6 +40,11 @@ export default function PropertiesListRow({row, }) {
     console.log(id)
     setHistoryModal(true);
     await getPropertyHistory(id);
+  }
+
+  function handleComissionModal() {
+    setStatusModal(false)
+    setComissionModal(true)
   }
 
   return (
@@ -173,7 +181,8 @@ export default function PropertiesListRow({row, }) {
       </TableRow>
       <PreviewModal open={previewModal} setOpen={setPreviewModal} data={data} loading={loading}/>
       <HistoryModal open={historyModal} setOpen={setHistoryModal} data={historyData} loading={loading}/>
-      <ChangeStatusModal data={row} open={statusModal} setOpen={setStatusModal} />
+      <ChangeStatusModal data={row} open={statusModal} setOpen={setStatusModal} trigger={() => setComissionModal(true)} />
+      <ComissionModal data={row} open={comissionModal} setOpen={setComissionModal} trigger={() => setComissionModal(true)} />
     </>
   )
 }

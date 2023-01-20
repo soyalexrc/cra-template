@@ -1,10 +1,9 @@
 import {useState} from 'react';
 import {useDispatch, useSelector} from "../../../redux/store";
-import { setToken, setCurrentUser, removeToken } from '../../../redux/slices/auth'
-import { sleep } from '../../../utils/helpers'
-import { useNavigate } from 'react-router-dom';
+import {removeToken, setCurrentUser, setToken} from '../../../redux/slices/auth'
+import {useNavigate} from 'react-router-dom';
 import axios from "../../../utils/axios";
-import { useSnackbar } from 'notistack';
+import {useSnackbar} from 'notistack';
 import * as CryptoJS from "crypto-js";
 
 export default function useAuth() {
@@ -61,5 +60,9 @@ export default function useAuth() {
     navigate('/login');
   }
 
-  return {login, logout, token, currentUser, loading, error};
+  function getUser() {
+    return JSON.parse(localStorage.getItem('vi-currentUser'))
+  }
+
+  return {login, logout, token, currentUser, loading, error, getUser};
 }

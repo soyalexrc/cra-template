@@ -12,6 +12,7 @@ const slice = createSlice({
   initialState,
   reducers: {
 
+
     setCurrentUser(state, {payload}) {
       state.currentUser= payload;
       localStorage.setItem('vi-currentUser', JSON.stringify(payload))

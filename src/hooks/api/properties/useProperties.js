@@ -1,15 +1,15 @@
 import {useState} from 'react';
-import { useSnackbar } from 'notistack'
+import {useSnackbar} from 'notistack'
 import {useDispatch, useSelector} from "../../../redux/store";
-import { removeProperty, setProperties, setPropertyHistory } from '../../../redux/slices/properties';
-import { setCurrentProperty } from '../../../redux/slices/propertyRegisterForm';
+import {removeProperty, setProperties, setPropertyHistory} from '../../../redux/slices/properties';
+import {setCurrentProperty} from '../../../redux/slices/propertyRegisterForm';
 import axios from "../../../utils/axios";
 
 export default function useProperties() {
   const dispatch = useDispatch();
   const {properties, history} = useSelector(state => state.properties);
   const [loading, setLoading] = useState(false);
-  const { enqueueSnackbar } = useSnackbar()
+  const {enqueueSnackbar} = useSnackbar()
 
   async function getProperties(data) {
     try {
@@ -19,7 +19,7 @@ export default function useProperties() {
         dispatch(setProperties(response.data))
       }
     } catch (err) {
-      enqueueSnackbar(`Error ${JSON.stringify(err)}`, { variant: 'error' })
+      enqueueSnackbar(`Error ${JSON.stringify(err)}`, {variant: 'error'})
     } finally {
       setLoading(false);
     }
@@ -33,7 +33,7 @@ export default function useProperties() {
         dispatch(setCurrentProperty(response.data))
       }
     } catch (err) {
-      enqueueSnackbar(`Error ${JSON.stringify(err)}`, { variant: 'error' })
+      enqueueSnackbar(`Error ${JSON.stringify(err)}`, {variant: 'error'})
     } finally {
       setLoading(false);
     }
@@ -56,31 +56,77 @@ export default function useProperties() {
   async function deleteProperty(id) {
     try {
       const response = await axios.delete(`property/deleteData?id=${id}`)
-      console.log(response);
       if (response.status === 200) {
         dispatch(removeProperty(id))
         enqueueSnackbar('Se elimino la propiedad con exito!', {variant: 'success'})
       }
-    } catch(err) {
-      console.log(err)
+    } catch (err) {
       enqueueSnackbar('No se pudo eliminar la propiedad, ocurrio un error!', {variant: 'error'})
     }
   }
 
-  async function updateStatusProperty(id, status) {
+  async function updateStatusProperty(id, status, payload) {
     try {
       const response = await axios.put("property/updateStatus", {id, property_status: status})
       if (response.status === 200) {
         enqueueSnackbar('Se cambio el estado de la propiedad con exito!', {variant: 'success'});
+        await updateHistory(payload);
         await getProperties({
           filters: [],
           pageNumber: 1,
           pageSize: 10
         })
       }
-    } catch(e) {
+    } catch (e) {
       enqueueSnackbar('No se pudo cambiar el estatus de la propiedad, ocurrio un error!', {variant: 'error'})
     }
   }
-  return {getProperties, loading, properties, getPropertyById, deleteProperty, updateStatusProperty, getPropertyHistory, history};
+
+  async function updateHistory(payload) {
+    try {
+      const response = await axios.post("property/addHistoric", payload)
+      if (response.status === 200) {
+        enqueueSnackbar('Se actualizo el historial de la propiedad con exito!', {variant: 'success'});
+        await getProperties({
+          filters: [],
+          pageNumber: 1,
+          pageSize: 10
+        })
+      }
+    } catch (e) {
+      enqueueSnackbar('No se pudo cambiar el estatus de la propiedad, ocurrio un error!', {variant: 'error'})
+    }
+  }
+
+  async function updateSellerAndCommission(payload) {
+    try {
+      setLoading(true);
+      const response = await axios.put("property/updateSellerAndComission", payload)
+      if (response.status === 200) {
+        enqueueSnackbar('Se actualizo la informacion de comisiones con exito!', {variant: 'success'});
+        await getProperties({
+          filters: [],
+          pageNumber: 1,
+          pageSize: 10
+        })
+      }
+    } catch (e) {
+      enqueueSnackbar('No se pudo registrar la informacion, ocurrio un error!', {variant: 'error'})
+    }
+    finally {
+      setLoading(false);
+    }
+  }
+
+  return {
+    getProperties,
+    loading,
+    properties,
+    getPropertyById,
+    deleteProperty,
+    updateStatusProperty,
+    getPropertyHistory,
+    history,
+    updateSellerAndCommission
+  };
 }
