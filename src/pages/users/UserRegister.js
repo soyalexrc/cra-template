@@ -26,8 +26,10 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import noImage from '../../assets/img/no-image.jpg'
 import useCreateUser from "../../hooks/api/users/useCreateUser";
+import {useNavigate} from "react-router-dom";
 
 export default function UserEdit() {
+  const navigate = useNavigate();
   const largeScreen = useMediaQuery(theme => theme.breakpoints.up('md'));
   const [showPassword, setShowPassword] = useState(false);
   const {createUser, loading} = useCreateUser();
@@ -355,7 +357,11 @@ export default function UserEdit() {
                 </Grid>
               </Grid>
 
-
+              <Grid item xs={12} sx={{display: 'flex', justifyContent: 'space-between', mt: 5, flexWrap: 'wrap', flexDirection: largeScreen ? 'row' : 'column-reverse'}}>
+                <Button sx={{ mt: !largeScreen ? 3 : 0 }} fullWidth={!largeScreen} onClick={() => navigate(-1)} variant='outlined'>Cancelar</Button>
+                <Button disabled={loading} fullWidth={!largeScreen}  onClick={() => createUser(userData)}
+                        variant='contained'>Registrar usuario</Button>
+              </Grid>
             </Container>
           </Grid>
           <Grid item xs={12} md={4}>
@@ -387,9 +393,6 @@ export default function UserEdit() {
                             align='center'>{userData.company ? userData.company : 'Vision Inmobiliaria'}</Typography>
               </Box>
             </Paper>
-          </Grid>
-          <Grid item xs={12} sx={{display: 'flex', justifyContent: 'center'}}>
-            <Button disabled={loading} fullWidth={!largeScreen} sx={{ m: 5 }} onClick={() => createUser(userData)} variant='contained'>Registrar usuario</Button>
           </Grid>
         </Grid>
     </Page>

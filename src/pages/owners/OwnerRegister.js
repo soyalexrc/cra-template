@@ -20,8 +20,10 @@ import PhoneInput from 'react-phone-input-2'
 import {useState} from 'react';
 import Page from "../../components/Page";
 import useCreateOwner from "../../hooks/api/owners/useCreateOwner";
+import {useNavigate} from "react-router-dom";
 
 export default function OwnerEdit() {
+  const navigate = useNavigate();
   const largeScreen = useMediaQuery(theme => theme.breakpoints.up('md'));
   const { loading, createOwner} = useCreateOwner()
   const [ownerData, setOwnerData] = useState({
@@ -136,11 +138,13 @@ export default function OwnerEdit() {
                 </Grid>
 
               </Grid>
+              <Grid item xs={12} sx={{display: 'flex', justifyContent: 'space-between', mt: 5, flexWrap: 'wrap', flexDirection: largeScreen ? 'row' : 'column-reverse'}}>
+                <Button sx={{ mt: !largeScreen ? 3 : 0 }} fullWidth={!largeScreen} onClick={() => navigate(-1)} variant='outlined'>Cancelar</Button>
+                <Button fullWidth={!largeScreen} disabled={loading} onClick={() => createOwner(ownerData)} variant='contained'>Registrar propietario</Button>
+              </Grid>
             </Container>
           </Grid>
-          <Grid item xs={12} sx={{display: 'flex', justifyContent: 'center'}}>
-            <Button fullWidth={!largeScreen} disabled={loading} onClick={() => createOwner(ownerData)} variant='contained'>Registrar propietario</Button>
-          </Grid>
+
         </Grid>
 
     </Page>

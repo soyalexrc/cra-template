@@ -27,6 +27,7 @@ import useCreateAdviser from "../../hooks/api/externalAdvisers/useCreateAdviser"
 import useCreateAlly from "../../hooks/api/allies/useCreateAlly";
 
 export default function OwnerEdit() {
+  const navigate = useNavigate();
   const largeScreen = useMediaQuery(theme => theme.breakpoints.up('md'));
   const { loading, createAlly} = useCreateAlly()
   const [allyData, setAllyData] = useState({
@@ -141,10 +142,11 @@ export default function OwnerEdit() {
               {/*</Grid>*/}
 
             </Grid>
+            <Grid item xs={12} sx={{display: 'flex', justifyContent: 'space-between', mt: 5, flexWrap: 'wrap', flexDirection: largeScreen ? 'row' : 'column-reverse'}}>
+              <Button sx={{ mt: !largeScreen ? 3 : 0 }} fullWidth={!largeScreen} onClick={() => navigate(-1)} variant='outlined'>Cancelar</Button>
+              <Button fullWidth={!largeScreen} disabled={loading} onClick={() => createAlly(allyData)} variant='contained'>Registrar propietario</Button>
+            </Grid>
           </Container>
-        </Grid>
-        <Grid item xs={12} sx={{display: 'flex', justifyContent: 'center'}}>
-          <Button fullWidth={!largeScreen} disabled={loading} onClick={() => createAlly(allyData)} variant='contained'>Registrar propietario</Button>
         </Grid>
       </Grid>
 

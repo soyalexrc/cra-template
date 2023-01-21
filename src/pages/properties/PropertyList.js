@@ -130,7 +130,18 @@ export default function PropertyList() {
             <TableRow>
               <TableCell/>
               <TableCell
-                sx={{color: theme => theme.palette.common.black, fontWeight: 'bold', width: '5%'}}>Imagen</TableCell>
+                sx={{color: theme => theme.palette.common.black, fontWeight: 'bold', width: '5%'}}>
+                Codigo
+              </TableCell>
+              <TableCell sx={{
+                color: theme => theme.palette.common.black,
+                fontWeight: 'bold',
+                width: '10%'
+              }}>Fecha de registro</TableCell>
+              <TableCell
+                sx={{color: theme => theme.palette.common.black, fontWeight: 'bold', width: '5%'}}>
+                Imagen
+              </TableCell>
               <TableCell
                 sx={{color: theme => theme.palette.common.black, fontWeight: 'bold', width: '20%'}}>Inmueble</TableCell>
               <TableCell sx={{
@@ -142,14 +153,9 @@ export default function PropertyList() {
                 color: theme => theme.palette.common.black,
                 fontWeight: 'bold',
                 width: '10%'
-              }}>Operacion</TableCell>
-              <TableCell sx={{
-                color: theme => theme.palette.common.black,
-                fontWeight: 'bold',
-                width: '10%'
-              }}>Estatus <br/> Documentos</TableCell>
-              <TableCell
-                sx={{color: theme => theme.palette.common.black, fontWeight: 'bold', width: '10%'}}>Aliado</TableCell>
+              }}>Precio</TableCell>
+              {/*<TableCell*/}
+              {/*  sx={{color: theme => theme.palette.common.black, fontWeight: 'bold', width: '10%'}}>Aliado</TableCell>*/}
               <TableCell align='center' sx={{
                 color: theme => theme.palette.common.black,
                 fontWeight: 'bold',
