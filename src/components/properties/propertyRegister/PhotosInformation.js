@@ -108,7 +108,7 @@ export default function PhotosInformation({handleChangeMedia}) {
               }}>
                 <DeleteButton onClick={() => handleRemoveImage(image.id)} item={`imagen: ${image.id}`}/>
               </Box>
-              <Box component='img' sx={{maxHeight: 200, maxWidth: 200}} src={image.imageData}/>
+              <Box component='img' sx={{maxHeight: 200, maxWidth: 200, width: '100%', height: '100%'}} src={`http://138.219.42.156:3000/images/${image.id}`}/>
             </Box>
           ))
         }

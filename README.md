@@ -68,3 +68,23 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+
+
+**MARIA
+
+build image
+
+docker build -t pruebacontainerluighi2693/vision-frontend:latest .
+
+push dockerhub
+
+docker push pruebacontainerluighi2693/vision-frontend:latest
+
+
+docker stop $(docker ps | grep 'vision-frontend:latest' | awk '{print $1}')
+docker rm $(docker ps -a | grep 'vision-frontend:latest' | awk '{print $1}')
+docker image rm $(docker image ls | grep 'pruebacontainerluighi2693/vision-frontend' | grep -v 'site' | awk '{print $3}')
+docker run -d -p 81:80 pruebacontainerluighi2693/vision-frontend:latest
+**

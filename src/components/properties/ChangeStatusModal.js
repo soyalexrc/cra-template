@@ -16,11 +16,27 @@ import download from '../../assets/img/status-config.png';
 import SmallLoading from "../SmallLoading";
 import useRegisterProperty from "../../hooks/api/properties/useRegisterProperty";
 import useProperties from "../../hooks/api/properties/useProperties";
+import useAuth from "../../hooks/api/auth/useAuth";
 
-export default function ChangeStatusModal({setOpen, open, data,}) {
+export default function ChangeStatusModal({setOpen, open, data, trigger}) {
   const largeScreen = useMediaQuery((theme) => theme.breakpoints.up('md'));
   const {updateStatusProperty, loading} = useProperties();
-  console.log(data);
+  const {getUser} = useAuth()
+
+  function middleWare(id, value) {
+    const payload = {
+      comments: '',
+      property_id: data.id,
+      status: value,
+      user_id: getUser().id,
+      username: getUser().username
+    }
+    updateStatusProperty(id, value, payload)
+    if (value === 'Cerrado por Externo') {
+      trigger()
+    }
+    setOpen(false);
+  }
 
   return (
     <Dialog
@@ -44,12 +60,13 @@ export default function ChangeStatusModal({setOpen, open, data,}) {
                 id="demo-simple-select"
                 value={data.property_status}
                 label="Estatus"
-                onChange={(e) => updateStatusProperty(data.id, e.target.value)}
+                onChange={(e) => middleWare(data.id, e.target.value)}
               >
                 <MenuItem value='Incompleto'>Incompleto</MenuItem>
                 <MenuItem value='Reservado'>Reservado</MenuItem>
                 <MenuItem value='Suspendido'>Suspendido</MenuItem>
                 <MenuItem value='Cerrado por Vision'>Cerrado por Vision</MenuItem>
+                <MenuItem value='Cerrado por Externo'>Cerrado por Externo</MenuItem>
               </Select>
             </FormControl>
           </DialogContent>

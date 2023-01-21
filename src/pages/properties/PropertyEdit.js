@@ -1,6 +1,6 @@
 import {Button, Box, Typography, useMediaQuery, Paper} from "@mui/material";
 import Page from "../../components/Page";
-import {useParams} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import {useState, useEffect} from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -22,9 +22,11 @@ import AttributesInformation from "../../components/properties/propertyEdit/Attr
 import useProperties from "../../hooks/api/properties/useProperties";
 import SmallLoading from "../../components/SmallLoading";
 import PreviewModal from "../../components/properties/PreviewModal";
+import PublicationSource from "../../components/properties/propertyEdit/PublicationSource";
 
 
 export default function PropertyRegister() {
+  const navigate = useNavigate();
   const largeScreen = useMediaQuery(theme => theme.breakpoints.up('md'))
   const { data, handleUpdateData, updateLoading } = useRegisterProperty();
   const {id} = useParams();
@@ -119,7 +121,7 @@ export default function PropertyRegister() {
 
             </AccordionSummary>
             <AccordionDetails>
-              <AttributesInformation />
+              <AttributesInformation event={expanded} />
             </AccordionDetails>
           </Accordion>
           <Accordion expanded={expanded === 'panel5'} onChange={handleChange('panel5')}>
@@ -154,7 +156,26 @@ export default function PropertyRegister() {
               <LegalDocumentsInformation event={expanded} />
             </AccordionDetails>
           </Accordion>
-          <Button sx={{ my: 5 }} disabled={updateLoading || expanded} onClick={submitData} fullWidth variant='contained' color='primary'>{updateLoading ? 'Guardando cambios': expanded ? 'Cierra los paneles para guardar los cambios' : 'Guardar cambios'}</Button>
+          <Accordion expanded={expanded === 'panel7'} onChange={handleChange('panel7')}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon color='secondary'/>}
+              aria-controls="panel7bh-content"
+              id="panel7bh-header"
+              sx={{p: 3}}
+            >
+              <Box display='flex' alignItems='center'>
+                <ArticleIcon color='secondary' sx={{mr: 2}}/>
+                <Typography variant='h6'>Fuente de publicacion</Typography>
+              </Box>
+            </AccordionSummary>
+            <AccordionDetails>
+              <PublicationSource event={expanded}/>
+            </AccordionDetails>
+          </Accordion>
+
+          <Button sx={{ mt: 5, mb: 3 }} disabled={updateLoading || expanded} onClick={submitData} fullWidth variant='contained' color='primary'>{updateLoading ? 'Guardando cambios': expanded ? 'Cierra los paneles para guardar los cambios' : 'Guardar cambios'}</Button>
+          <Button  onClick={() => navigate(-1)} fullWidth variant='outlined' color='primary'>Cancelar</Button>
+
         </Paper>
       }
       <PreviewModal data={data} open={openModal} setOpen={setOpenModal} loading={false} />

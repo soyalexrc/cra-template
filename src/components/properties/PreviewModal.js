@@ -17,8 +17,6 @@ import SmallLoading from "../SmallLoading";
 
 export default function PreviewModal({setOpen, open, data, loading}) {
   const fullScreen = useMediaQuery((theme) => theme.breakpoints.down('md'));
-  console.log(data);
-  console.log(loading);
 
   return (
     <Dialog
@@ -48,7 +46,8 @@ export default function PreviewModal({setOpen, open, data, loading}) {
               }
               {
                 data.images.length > 0 && data.images.map(image => (
-                  <Box m={2} width={200} height={200} border='1px solid lightgray'/>
+                  // <Box m={2} width={200} height={200} border='1px solid lightgray'/>
+                <Box component='img' sx={{maxHeight: 200, maxWidth: 200, width: '100%', height: '100%'}} src={`http://138.219.42.156:3000/images/${image.id}`}/>
                 ))
               }
             </Box>

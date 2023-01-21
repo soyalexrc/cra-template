@@ -20,7 +20,7 @@ import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import PhoneInput from 'react-phone-input-2'
 import {useState, useEffect} from 'react';
-import {useParams} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import Page from "../../components/Page";
 import backImg from '../../assets/img/card-back-1.png';
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
@@ -33,6 +33,7 @@ import * as CryptoJS from 'crypto-js';
 
 export default function UserEdit() {
   const {id} = useParams();
+  const navigate = useNavigate();
   const largeScreen = useMediaQuery(theme => theme.breakpoints.up('md'));
   const [showPassword, setShowPassword] = useState(false);
   const {loading, editUser} = useUpdateUser();
@@ -374,6 +375,12 @@ export default function UserEdit() {
                 </Grid>
               </Grid>
 
+              <Grid item xs={12} sx={{display: 'flex', justifyContent: 'space-between', mt: 5, flexWrap: 'wrap', flexDirection: largeScreen ? 'row' : 'column-reverse'}}>
+                <Button sx={{ mt: !largeScreen ? 3 : 0 }} fullWidth={!largeScreen} onClick={() => navigate(-1)} variant='outlined'>Cancelar</Button>
+                <Button disabled={loading} fullWidth={!largeScreen}  onClick={() => editUser(userData)}
+                        variant='contained'>Editar usuario</Button>
+              </Grid>
+
 
             </Container>
           </Grid>
@@ -407,10 +414,7 @@ export default function UserEdit() {
               </Box>
             </Paper>
           </Grid>
-          <Grid item xs={12} sx={{display: 'flex', justifyContent: 'center'}}>
-            <Button disabled={loading} fullWidth={!largeScreen} sx={{m: 5}} onClick={() => editUser(userData)}
-                    variant='contained'>Editar usuario</Button>
-          </Grid>
+
         </Grid>
       }
     </Page>

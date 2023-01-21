@@ -20,6 +20,7 @@ import LegalDocumentsInformation from "../../components/properties/propertyRegis
 import useRegisterProperty from "../../hooks/api/properties/useRegisterProperty";
 import AttributesInformation from "../../components/properties/propertyRegister/AttributesInformation";
 import PreviewModal from "../../components/properties/PreviewModal";
+import PublicationSource from "../../components/properties/propertyRegister/PublicationSource";
 
 
 export default function PropertyRegister() {
@@ -117,7 +118,7 @@ export default function PropertyRegister() {
 
           </AccordionSummary>
           <AccordionDetails>
-            <AttributesInformation/>
+            <AttributesInformation event={expanded}/>
           </AccordionDetails>
         </Accordion>
         <Accordion expanded={expanded === 'panel5'} onChange={handleChange('panel5')}>
@@ -152,8 +153,25 @@ export default function PropertyRegister() {
             <LegalDocumentsInformation event={expanded}/>
           </AccordionDetails>
         </Accordion>
-        <Button disabled={createLoading} sx={{my: 5}} onClick={submitData} fullWidth variant='contained'
+        <Accordion expanded={expanded === 'panel7'} onChange={handleChange('panel7')}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon color='secondary'/>}
+            aria-controls="panel7bh-content"
+            id="panel7bh-header"
+            sx={{p: 3}}
+          >
+            <Box display='flex' alignItems='center'>
+              <ArticleIcon color='secondary' sx={{mr: 2}}/>
+              <Typography variant='h6'>Fuente de publicacion</Typography>
+            </Box>
+          </AccordionSummary>
+          <AccordionDetails>
+            <PublicationSource event={expanded}/>
+          </AccordionDetails>
+        </Accordion>
+        <Button disabled={createLoading} sx={{mt: 5, mb: 3}} onClick={submitData} fullWidth variant='contained'
                 color='primary'>{createLoading ? 'Registrando informacion' : 'Registrar propiedad'}</Button>
+        <Button  onClick={() => navigate(-1)} fullWidth variant='outlined' color='primary'>Cancelar</Button>
       </Paper>
       <PreviewModal open={openModal} setOpen={setOpenModal} data={data} loading={false}/>
     </Page>

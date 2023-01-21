@@ -4,7 +4,6 @@ import useRegisterProperty from "../../../hooks/api/properties/useRegisterProper
 
 export default function AttributesInformation() {
   const {data, handleAttributeData} = useRegisterProperty()
-  console.log(data.attributes);
 
   return (
     <Grid container spacing={4}>

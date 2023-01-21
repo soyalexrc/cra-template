@@ -1,18 +1,34 @@
 import {useState} from 'react';
 import {useDispatch, useSelector} from "../../../redux/store";
-import { setToken, setCurrentUser, removeToken } from '../../../redux/slices/auth'
-import { sleep } from '../../../utils/helpers'
-import { useNavigate } from 'react-router-dom';
+import {removeToken, setCurrentUser, setToken} from '../../../redux/slices/auth'
+import {useNavigate} from 'react-router-dom';
 import axios from "../../../utils/axios";
-import { useSnackbar } from 'notistack';
+import {useSnackbar} from 'notistack';
+import * as CryptoJS from "crypto-js";
 
 export default function useAuth() {
   const {enqueueSnackbar} = useSnackbar();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { token, currentUser } = useSelector(state => state.auth)
+  const [encryptedPass, setEncryptedPass] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const masterCryptoKey = '123456$#@$^@1ERF'
+
+  function encryptValue(keys, value){
+    const key = CryptoJS.enc.Utf8.parse(keys);
+    const iv = CryptoJS.enc.Utf8.parse(keys);
+    const encrypted = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(value.toString()), key,
+      {
+        keySize: 128 / 8,
+        iv,
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7
+      });
+
+    return encrypted.toString();
+  }
 
   async function login(data) {
     try {
@@ -20,6 +36,8 @@ export default function useAuth() {
       const response = await axios.get(`user/login?email=${data.email}`)
       if (response.data.recordset.length > 0) {
         const user = response.data.recordset[0];
+        // const encryptedPassword = encryptValue(masterCryptoKey, user.password);
+        // console.log(encryptedPassword === user.)
         dispatch(setToken(user));
         dispatch(setCurrentUser(user));
         navigate('/');
@@ -42,5 +60,9 @@ export default function useAuth() {
     navigate('/login');
   }
 
-  return {login, logout, token, currentUser, loading, error};
+  function getUser() {
+    return JSON.parse(localStorage.getItem('vi-currentUser'))
+  }
+
+  return {login, logout, token, currentUser, loading, error, getUser};
 }

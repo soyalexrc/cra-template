@@ -23,8 +23,8 @@ const initialPropertyData = {
     propertyType: "",
     property_status: "",
     sellerId: null,
-    user: JSON.parse(localStorage.getItem('vi-currentUser')).username,
-    userId: JSON.parse(localStorage.getItem('vi-currentUser')).id
+    user: localStorage.getItem('vi-currentUser') ? JSON.parse(localStorage.getItem('vi-currentUser')).username : null,
+    userId: localStorage.getItem('vi-currentUser') ? JSON.parse(localStorage.getItem('vi-currentUser')).id : null
   },
   location: {
     country: "", //Venezuela

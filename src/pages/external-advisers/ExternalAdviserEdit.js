@@ -26,6 +26,7 @@ import useUpdateAdviser from "../../hooks/api/externalAdvisers/useUpdateAdviser"
 import useGetAdvisers from "../../hooks/api/externalAdvisers/useGetAdvisers";
 
 export default function OwnerEdit() {
+  const navigate = useNavigate();
   const {id} = useParams();
   const largeScreen = useMediaQuery(theme => theme.breakpoints.up('md'));
   const {currentAdviser, getAdviserById, loading: getLoading} = useGetAdvisers()
@@ -144,11 +145,14 @@ export default function OwnerEdit() {
                 {/*</Grid>*/}
 
               </Grid>
+              <Grid item xs={12} sx={{display: 'flex', justifyContent: 'space-between', mt: 5, flexWrap: 'wrap', flexDirection: largeScreen ? 'row' : 'column-reverse'}}>
+                <Button sx={{ mt: !largeScreen ? 3 : 0 }} fullWidth={!largeScreen} onClick={() => navigate(-1)} variant='outlined'>Cancelar</Button>
+                <Button fullWidth={!largeScreen} disabled={loading} onClick={() => editAdviser(adviserData)} variant='contained'>Editar propietario</Button>
+              </Grid>
             </Container>
           </Grid>
-          <Grid item xs={12} sx={{display: 'flex', justifyContent: 'center'}}>
-            <Button fullWidth={!largeScreen} disabled={loading} onClick={() => editAdviser(adviserData)} variant='contained'>Editar propietario</Button>
-          </Grid>
+
+
         </Grid>
       }
 
