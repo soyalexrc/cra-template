@@ -29,7 +29,6 @@ export default function useUpdateAlly() {
         enqueueSnackbar('Se edito el aliado con exito!', {variant: 'success'} )
       }
     } catch (e) {
-      console.log(e);
       enqueueSnackbar('Error!', {variant: 'error'} )
     } finally {
       setLoading(false);

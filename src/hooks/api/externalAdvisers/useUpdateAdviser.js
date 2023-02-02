@@ -29,7 +29,6 @@ export default function useUpdateAdviser() {
         enqueueSnackbar('Se edito el asesor externo con exito!', {variant: 'success'} )
       }
     } catch (e) {
-      console.log(e);
       enqueueSnackbar('Error!', {variant: 'error'} )
     } finally {
       setLoading(false);

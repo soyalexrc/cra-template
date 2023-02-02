@@ -24,7 +24,7 @@ export default function NegotiationInformation({event}) {
   return (
     <Grid container spacing={4}>
       <Grid item xs={12} md={3}>
-        <Typography fontWeight='bold' sx={{mb: 1}}>Precio</Typography>
+        <Typography fontWeight='bold' sx={{mb: 1}}>Precio del inmueble</Typography>
         <TextField
           color='secondary'
           fullWidth

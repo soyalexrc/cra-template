@@ -29,7 +29,6 @@ export default function useUpdateOwner() {
         enqueueSnackbar('Se edito el propietario con exito!', {variant: 'success'} )
       }
     } catch (e) {
-      console.log(e);
       enqueueSnackbar('Error!', {variant: 'error'} )
     } finally {
       setLoading(false);

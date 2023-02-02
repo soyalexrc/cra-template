@@ -12,7 +12,6 @@ export default function GeneralInformation({event}) {
   } = useRegisterProperty();
   const [property, setProperty] = useState({...data.property})
 
-  console.log('data', data);
 
   const handleChange = async (index, value) => {
     setProperty(prevState => ({
@@ -34,7 +33,6 @@ export default function GeneralInformation({event}) {
     handlePropertyData(property)
   }, [event])
 
-  console.log(property);
   return (
     <Grid container spacing={4}>
       <Grid item xs={12} md={6}>

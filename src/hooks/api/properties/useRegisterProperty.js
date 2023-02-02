@@ -42,7 +42,6 @@ export default function useRegisterProperty() {
         return response.data
       }
     } catch (err) {
-      console.log(err);
     } finally {
       setLoading(false);
     }
@@ -55,7 +54,6 @@ export default function useRegisterProperty() {
         dispatch(setAttributes(response.data));
       }
     } catch (e) {
-      console.log(e)
     }
   }
 
@@ -124,9 +122,7 @@ export default function useRegisterProperty() {
     const {files} = e.target;
 
     const forLoop = async _ => {
-      console.log('comence!')
       for (let i = 0; i < files.length; i++) {
-        console.log('here ', i)
         try {
           const reader = new FileReader();
           reader.readAsDataURL(files[i]);
@@ -143,12 +139,10 @@ export default function useRegisterProperty() {
             await dispatch(addImage(objImage));
           }
         } catch (e) {
-          console.log(e)
         }
       }
     }
     await forLoop();
-    console.log('termine')
   }
 
   const handleRemoveImage = (id) => {

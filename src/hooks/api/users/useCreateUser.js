@@ -26,7 +26,6 @@ export default function useCreateUser() {
 
   async function createUser(data) {
     const body = {...data, password: encryptValue(masterCryptoKey, data.password)}
-    console.log(body);
     try {
       setLoading(true);
       const response = await axios.post('user/addNewData', data);
@@ -35,7 +34,6 @@ export default function useCreateUser() {
         navigate(-1)
       }
     } catch (e) {
-      console.log(e);
       enqueueSnackbar('Error!', {variant: 'error'} )
     } finally {
       setLoading(false);

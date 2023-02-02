@@ -37,7 +37,6 @@ export default function useAuth() {
       if (response.data.recordset.length > 0) {
         const user = response.data.recordset[0];
         // const encryptedPassword = encryptValue(masterCryptoKey, user.password);
-        // console.log(encryptedPassword === user.)
         dispatch(setToken(user));
         dispatch(setCurrentUser(user));
         navigate('/');
@@ -45,7 +44,6 @@ export default function useAuth() {
       } else {
         enqueueSnackbar('No se encontro un user con este email!', { variant: 'error' });
       }
-      console.log(response);
 
     } catch(e) {
       enqueueSnackbar(JSON.stringify(e), { variant: 'error' });

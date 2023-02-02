@@ -10,14 +10,15 @@ export default function Table(theme) {
             '&:hover': {
               backgroundColor: theme.palette.action.hover
             }
-          }
+          },
         }
       }
     },
     MuiTableCell: {
       styleOverrides: {
         root: {
-          borderBottom: 'none'
+          borderBottom: 'none',
+          width: '300px'
         },
         head: {
           color: theme.palette.text.secondary,

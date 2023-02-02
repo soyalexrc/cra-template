@@ -19,7 +19,6 @@ import DeleteButton from "../shared/DeleteButton";
 import {useState, useEffect} from 'react';
 
 export default function ({open, closeAction, largeScreen, type, initialData, handleChange, fnAction}) {
-  console.log(initialData);
   const {editAttribute, createAttribute, loading} = useAttributes();
   const [options, setOptions] = useState(null)
 

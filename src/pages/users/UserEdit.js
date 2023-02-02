@@ -51,7 +51,6 @@ export default function UserEdit() {
       padding: CryptoJS.pad.Pkcs7
     });
 
-    console.log('decrypted', decrypted.toString(CryptoJS.enc.Utf8));
 
     return decrypted.toString(CryptoJS.enc.Utf8);
   }
@@ -74,7 +73,6 @@ export default function UserEdit() {
   }, [currentUser])
 
   function changeUserData(type, value) {
-    console.log(value);
     setUserData(prevState => ({
       ...prevState,
       [type]: value
@@ -83,7 +81,6 @@ export default function UserEdit() {
 
   function handleImageUpload(e) {
     const {files} = e.target;
-    console.log(files[0])
     const reader = new FileReader();
     reader.readAsDataURL(files[0]);
     reader.onload = () => {

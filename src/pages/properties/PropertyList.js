@@ -15,7 +15,7 @@ import {
   IconButton,
   Paper,
   Badge,
-  useMediaQuery,
+  useMediaQuery, styled,
 } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import {useState, useEffect} from "react";
@@ -26,14 +26,21 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import useProperties from "../../hooks/api/properties/useProperties";
 import PropertiesListRow from "../../components/properties/PropertiesListRow";
 import PropertiesFiltersDrawer from "../../components/properties/PropertiesFiltersDrawer";
+import useGetOwners from "../../hooks/api/owners/useGetOwners";
+
+const TableHeaderItem = styled(TableCell)(({theme}) => ({
+  color: theme.palette.common.black,
+  fontWeight: 'bold',
+}));
 
 export default function PropertyList() {
   const largeScreen = useMediaQuery((theme) => theme.breakpoints.up('md'))
   const {getProperties, properties, loading} = useProperties()
+  const {getOwners, owners } = useGetOwners()
   const [filtersData, setFiltersData] = useState({
     filters: [],
     pageNumber: 1,
-    pageSize: 10
+    pageSize: 5
   })
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('')
@@ -74,7 +81,9 @@ export default function PropertyList() {
 
   useEffect(() => {
     getProperties(filtersData);
+    getOwners()
   }, [])
+
 
 
   return (
@@ -124,48 +133,38 @@ export default function PropertyList() {
       <Box sx={{width: '100%'}}>
         {loading && <LinearProgress/>}
       </Box>
-      <TableContainer>
-        <Table>
+      <TableContainer >
+        <Table width='100%'>
           <TableHead sx={{backgroundColor: '#eaeaea'}}>
             <TableRow>
-              <TableCell/>
-              <TableCell
-                sx={{color: theme => theme.palette.common.black, fontWeight: 'bold', width: '5%'}}>
-                Codigo
-              </TableCell>
-              <TableCell sx={{
-                color: theme => theme.palette.common.black,
-                fontWeight: 'bold',
-                width: '10%'
-              }}>Fecha de registro</TableCell>
-              <TableCell
-                sx={{color: theme => theme.palette.common.black, fontWeight: 'bold', width: '5%'}}>
-                Imagen
-              </TableCell>
-              <TableCell
-                sx={{color: theme => theme.palette.common.black, fontWeight: 'bold', width: '20%'}}>Inmueble</TableCell>
-              <TableCell sx={{
-                color: theme => theme.palette.common.black,
-                fontWeight: 'bold',
-                width: '20%'
-              }}>Ubicacion</TableCell>
-              <TableCell sx={{
-                color: theme => theme.palette.common.black,
-                fontWeight: 'bold',
-                width: '10%'
-              }}>Precio</TableCell>
-              {/*<TableCell*/}
-              {/*  sx={{color: theme => theme.palette.common.black, fontWeight: 'bold', width: '10%'}}>Aliado</TableCell>*/}
-              <TableCell align='center' sx={{
-                color: theme => theme.palette.common.black,
-                fontWeight: 'bold',
-                width: '20%'
-              }}>Acciones</TableCell>
+              <TableHeaderItem>Nº</TableHeaderItem>
+              <TableHeaderItem >Código</TableHeaderItem>
+              <TableHeaderItem >Fecha de registro</TableHeaderItem>
+              <TableHeaderItem >Imagen</TableHeaderItem>
+              <TableHeaderItem >Inmueble</TableHeaderItem>
+              <TableHeaderItem >Nomenclatura</TableHeaderItem>
+              <TableHeaderItem >Ubicación</TableHeaderItem>
+              <TableHeaderItem >Precio</TableHeaderItem>
+              <TableHeaderItem >Negociación </TableHeaderItem>
+              <TableHeaderItem >Propietario</TableHeaderItem>
+              <TableHeaderItem >Tipo de operación</TableHeaderItem>
+              <TableHeaderItem >Aliado</TableHeaderItem>
+              <TableHeaderItem >Asesor</TableHeaderItem>
+              <TableHeaderItem >Capacitador externo</TableHeaderItem>
+              <TableHeaderItem >Motivo de operación</TableHeaderItem>
+              <TableHeaderItem >Estatus</TableHeaderItem>
+              <TableHeaderItem >Estatus documento</TableHeaderItem>
+              <TableHeaderItem >Nomenclatura</TableHeaderItem>
+              <TableHeaderItem >M2 Terreno </TableHeaderItem>
+              <TableHeaderItem >M2 Construcción </TableHeaderItem>
+              <TableHeaderItem >Tipo de piso </TableHeaderItem>
+              <TableHeaderItem >Comentarios Distribución </TableHeaderItem>
+              <TableHeaderItem  align='center'>Acciones</TableHeaderItem>
             </TableRow>
           </TableHead>
           <TableBody>
-            {!loading && properties.data && properties.data.length > 0 && properties.data.map((row) => (
-              <PropertiesListRow key={row.id} row={row}/>
+            {!loading && properties.data && properties.data.length > 0 && properties.data.map((row, index) => (
+              <PropertiesListRow key={row.id} row={row} index={index + 1} owners={owners}/>
             ))}
           </TableBody>
         </Table>

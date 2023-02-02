@@ -90,7 +90,6 @@ export default function MenuItems({open, fn}) {
     navigate(path)
   }
 
-  console.log('routes', data)
 
   return (
     <Box sx={{color: 'white'}}>

@@ -10,10 +10,8 @@ export default function PhotosInformation({handleChangeMedia}) {
   const inputRef = useRef();
   const [dragItem, setDragItem] = useState(null)
 
-  console.log(loading);
 
   const handleDragStart = (index) => {
-    console.log(index);
     setDragItem(index);
   };
 
@@ -31,8 +29,6 @@ export default function PhotosInformation({handleChangeMedia}) {
   };
 
   const handleDrop = (e, index) => {
-    console.log(e);
-    console.log(index);
   };
 
 

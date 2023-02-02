@@ -34,7 +34,6 @@ export default function PublicationSource({event}) {
     handlePropertyData(property)
   }, [event])
 
-  console.log(property);
   return (
     <Box p={3}>
       <FormGroup>

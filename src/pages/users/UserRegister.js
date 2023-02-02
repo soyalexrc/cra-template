@@ -59,7 +59,6 @@ export default function UserEdit() {
 
 
   function changeUserData(type, value) {
-    console.log(value);
     setUserData(prevState => ({
       ...prevState,
       [type]: value
@@ -68,7 +67,6 @@ export default function UserEdit() {
 
   function handleImageUpload(e) {
     const {files} = e.target;
-    console.log(files[0])
     const reader = new FileReader();
     reader.readAsDataURL(files[0]);
     reader.onload = () => {

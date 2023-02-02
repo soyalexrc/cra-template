@@ -17,7 +17,6 @@ export default function useCreateAdviser() {
         navigate(-1)
       }
     } catch (e) {
-      console.log(e);
       enqueueSnackbar('Error!', {variant: 'error'} )
     } finally {
       setLoading(false);

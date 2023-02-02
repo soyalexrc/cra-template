@@ -30,7 +30,6 @@ CarouselItem.propTypes = {
 
 function CarouselItem({item}) {
   const navigate = useNavigate();
-  console.log(item);
 
   return (
     <Box sx={{position: 'relative'}}>

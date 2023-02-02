@@ -17,8 +17,6 @@ import SmallLoading from "../SmallLoading";
 import {formatDate} from "../../utils/helpers";
 
 export default function HistoryModal({setOpen, open, data, loading}) {
-  console.log(data);
-  console.log(loading);
 
   return (
     <Dialog

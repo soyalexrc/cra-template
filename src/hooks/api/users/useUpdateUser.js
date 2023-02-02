@@ -57,7 +57,6 @@ export default function useUpdateUser() {
         enqueueSnackbar('Se edito el usuario con exito!', {variant: 'success'} )
       }
     } catch (e) {
-      console.log(e);
       enqueueSnackbar('Error!', {variant: 'error'} )
     } finally {
       setLoading(false);

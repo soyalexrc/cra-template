@@ -19,7 +19,6 @@ export default function useDeleteAlly() {
         fn();
       }
     } catch (e) {
-      console.log(e);
       enqueueSnackbar('Error!', {variant: 'error'} )
     } finally {
       setLoading(false);

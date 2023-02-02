@@ -47,7 +47,6 @@ const slice = createSlice({
     },
 
     handleChangeAttribute(state, {payload}) {
-      console.log('payload', payload);
       // const currentAttr = state.data.attributes.filter(x => x.id === payload.index)[0];
       // currentAttr.value = payload.value;
       // state.data.attributes = attributes;

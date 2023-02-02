@@ -42,7 +42,6 @@ export default function OwnerEdit() {
   })
 
   function changeOwnerData(type, value) {
-    console.log(value);
     setAllyData(prevState => ({
       ...prevState,
       [type]: value

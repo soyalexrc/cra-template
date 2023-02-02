@@ -32,7 +32,6 @@ export default function GeneralInformation({event}) {
     handlePropertyData(property)
   }, [event])
 
-  console.log(property);
   return (
     <Grid container spacing={4}>
       <Grid item xs={12} md={6}>
@@ -150,17 +149,6 @@ export default function GeneralInformation({event}) {
           fullWidth
           placeholder='Tipo de inmueble + Operacion'
           value={property.propertyType + ' ' + property.operationType}
-          variant="outlined"
-        />
-      </Grid>
-      <Grid item xs={12} md={3}>
-        <Typography fontWeight='bold' sx={{mb: 1}}>Precio de inmueble</Typography>
-        <TextField
-          color='secondary'
-          fullWidth
-          placeholder='Precio'
-          value={property.price}
-          onChange={(e) => handleChange('price', e.target.value)}
           variant="outlined"
         />
       </Grid>

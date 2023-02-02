@@ -42,7 +42,6 @@ export default function OwnerEdit() {
   }, [currentAdviser])
 
   function changeOwnerData(type, value) {
-    console.log(value);
     setAdviserData(prevState => ({
       ...prevState,
       [type]: value

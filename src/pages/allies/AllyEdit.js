@@ -38,7 +38,6 @@ export default function OwnerEdit() {
   }, [currentAlly])
 
   function changeOwnerData(type, value) {
-    console.log(value);
     setAdviserData(prevState => ({
       ...prevState,
       [type]: value

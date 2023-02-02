@@ -120,7 +120,6 @@ export default function Sidebar() {
     logout();
   }
 
-  console.log(currentUser);
 
 
   const menuId = 'primary-search-account-menu';
@@ -315,6 +314,7 @@ export default function Sidebar() {
         height: '100%',
         minHeight: '100vh',
         flexGrow: 1,
+        overflowX: 'hidden',
         backgroundColor: '#fff'
       }}>
         <DrawerHeader/>

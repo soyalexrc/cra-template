@@ -34,7 +34,6 @@ export default function useAttributes() {
         fn();
       }
     } catch (e) {
-      console.log(e);
       enqueueSnackbar('Error!', {variant: 'error'} )
     } finally {
       setLoading(false);
@@ -59,7 +58,6 @@ export default function useAttributes() {
         fn();
       }
     } catch (e) {
-      console.log(e);
       enqueueSnackbar('Error!', {variant: 'error'} )
     } finally {
       setLoading(false);
@@ -84,7 +82,6 @@ export default function useAttributes() {
         fn();
       }
     } catch (e) {
-      console.log(e);
       enqueueSnackbar('Error!', {variant: 'error'} )
     } finally {
       setLoading(false);

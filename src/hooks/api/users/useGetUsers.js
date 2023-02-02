@@ -29,7 +29,6 @@ export default function useGetUsers() {
       setLoading(true);
       const response = await axios.get(`user/getById?id=${id}`);
       if (response.status === 200 && response.data.recordset.length > 0) {
-        console.log(response.data.recordset[0])
         dispatch(setCurrentUser(response.data.recordset[0]))
       }
     } catch (err) {
